@@ -1394,6 +1394,216 @@ final class AppBehaviorTests: XCTestCase {
         )
     }
 
+    func testUsageVisualizationScaleCoversAllBoundaries() {
+        XCTAssertEqual(
+            UsageVisualizationScale.level(value: nil, maximum: 100),
+            .baseline
+        )
+        XCTAssertEqual(
+            UsageVisualizationScale.level(value: -1, maximum: 100),
+            .baseline
+        )
+        XCTAssertEqual(
+            UsageVisualizationScale.level(value: 0, maximum: 100),
+            .baseline
+        )
+        XCTAssertEqual(
+            UsageVisualizationScale.level(value: 1, maximum: 0),
+            .baseline
+        )
+        XCTAssertEqual(
+            UsageVisualizationScale.level(
+                value: .infinity,
+                maximum: 100
+            ),
+            .baseline
+        )
+        XCTAssertEqual(
+            UsageVisualizationScale.level(
+                value: 1,
+                maximum: .nan
+            ),
+            .baseline
+        )
+
+        XCTAssertEqual(
+            UsageVisualizationScale.level(value: 0.001, maximum: 100),
+            .low
+        )
+        XCTAssertEqual(
+            UsageVisualizationScale.level(value: 24.999, maximum: 100),
+            .low
+        )
+        XCTAssertEqual(
+            UsageVisualizationScale.level(value: 25, maximum: 100),
+            .medium
+        )
+        XCTAssertEqual(
+            UsageVisualizationScale.level(value: 49.999, maximum: 100),
+            .medium
+        )
+        XCTAssertEqual(
+            UsageVisualizationScale.level(value: 50, maximum: 100),
+            .high
+        )
+        XCTAssertEqual(
+            UsageVisualizationScale.level(value: 74.999, maximum: 100),
+            .high
+        )
+        XCTAssertEqual(
+            UsageVisualizationScale.level(value: 75, maximum: 100),
+            .peak
+        )
+        XCTAssertEqual(
+            UsageVisualizationScale.level(value: 100, maximum: 100),
+            .peak
+        )
+        XCTAssertEqual(
+            UsageVisualizationScale.level(value: 120, maximum: 100),
+            .peak
+        )
+    }
+
+    func testMenuBarQuotaIconClampsRemainingPercent() {
+        XCTAssertEqual(
+            MenuBarQuotaIconModel.clampedFraction(
+                remainingPercent: -20
+            ),
+            0,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            MenuBarQuotaIconModel.clampedFraction(
+                remainingPercent: 0
+            ),
+            0,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            MenuBarQuotaIconModel.clampedFraction(
+                remainingPercent: 50
+            ),
+            0.5,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            MenuBarQuotaIconModel.clampedFraction(
+                remainingPercent: 100
+            ),
+            1,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            MenuBarQuotaIconModel.clampedFraction(
+                remainingPercent: 120
+            ),
+            1,
+            accuracy: 0.000_001
+        )
+    }
+
+    func testMenuBarQuotaIconDistinguishesUnavailableFromZero() {
+        let unavailable = MenuBarQuotaIconState(remainingPercent: nil)
+        let empty = MenuBarQuotaIconState(remainingPercent: 0)
+
+        XCTAssertEqual(unavailable, .unavailable)
+        XCTAssertNil(unavailable.remainingFraction)
+        XCTAssertNotEqual(unavailable, empty)
+        XCTAssertEqual(empty.remainingFraction, 0)
+    }
+
+    func testMenuBarQuotaIconWaterlineIsMonotonic() {
+        let full = MenuBarQuotaIconModel.waterlineY(
+            remainingFraction: 1
+        )
+        let half = MenuBarQuotaIconModel.waterlineY(
+            remainingFraction: 0.5
+        )
+        let empty = MenuBarQuotaIconModel.waterlineY(
+            remainingFraction: 0
+        )
+
+        XCTAssertLessThan(full, half)
+        XCTAssertLessThan(half, empty)
+        XCTAssertEqual(full, 3.28, accuracy: 0.000_001)
+        XCTAssertEqual(half, 8.28, accuracy: 0.000_001)
+        XCTAssertEqual(empty, 13.28, accuracy: 0.000_001)
+    }
+
+    func testMenuBarQuotaIconAnimationPreservesEndpoints() {
+        XCTAssertEqual(
+            MenuBarQuotaIconModel.easeOutProgress(-1),
+            0,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            MenuBarQuotaIconModel.easeOutProgress(0.5),
+            0.875,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            MenuBarQuotaIconModel.easeOutProgress(2),
+            1,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            MenuBarQuotaIconModel.interpolatedFraction(
+                from: 1,
+                to: 0,
+                progress: 0
+            ),
+            1,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            MenuBarQuotaIconModel.interpolatedFraction(
+                from: 1,
+                to: 0,
+                progress: 0.5
+            ),
+            0.5,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            MenuBarQuotaIconModel.interpolatedFraction(
+                from: 0,
+                to: 1,
+                progress: 1
+            ),
+            1,
+            accuracy: 0.000_001
+        )
+    }
+
+    @MainActor
+    func testMenuBarQuotaIconUsesTemplateCanvasAndDistinctStates() {
+        let unavailable = MenuBarQuotaIconRenderer.image(
+            for: .unavailable
+        )
+        let empty = MenuBarQuotaIconRenderer.image(
+            for: .available(remainingFraction: 0)
+        )
+        let full = MenuBarQuotaIconRenderer.image(
+            for: .available(remainingFraction: 1)
+        )
+
+        XCTAssertEqual(unavailable.size.width, 20)
+        XCTAssertEqual(unavailable.size.height, 16)
+        XCTAssertEqual(MenuBarQuotaIconModel.visibleGlyphSize.width, 15)
+        XCTAssertEqual(MenuBarQuotaIconModel.visibleGlyphSize.height, 16)
+        XCTAssertTrue(unavailable.isTemplate)
+        XCTAssertTrue(empty.isTemplate)
+        XCTAssertTrue(full.isTemplate)
+        XCTAssertNotEqual(
+            unavailable.tiffRepresentation,
+            empty.tiffRepresentation
+        )
+        XCTAssertNotEqual(
+            empty.tiffRepresentation,
+            full.tiffRepresentation
+        )
+    }
+
     @MainActor
     func testZeroResetCreditsDoNotExposeDemoAction() async {
         let suiteName = "QuotaViewTests.\(UUID().uuidString)"

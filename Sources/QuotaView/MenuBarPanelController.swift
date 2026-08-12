@@ -57,6 +57,11 @@ final class MenuBarPanelController: NSObject {
     private var resizeAnimationStartFrame = NSRect.zero
     private var resizeAnimationTargetFrame: NSRect?
     private var resizeAnimationFixedTop: CGFloat = 0
+    private var iconAnimationTimer: Timer?
+    private var iconAnimationStartTime: TimeInterval = 0
+    private var iconAnimationStartFraction: Double = 0
+    private var iconAnimationTargetFraction: Double?
+    private var displayedIconFraction: Double?
     private var panelAnchor: PanelAnchor?
     private var isPresentingConfirmation = false
     private var glassSurfaceRequiresVisibleAttachment = true
@@ -88,6 +93,7 @@ final class MenuBarPanelController: NSObject {
 
     deinit {
         resizeAnimationTimer?.invalidate()
+        iconAnimationTimer?.invalidate()
         if let localEventMonitor {
             NSEvent.removeMonitor(localEventMonitor)
         }
@@ -299,9 +305,10 @@ final class MenuBarPanelController: NSObject {
         )
         let title = presentation.statusTextParts.joined(separator: " ")
 
-        button.image = preferences.showStatusIcon
-            ? MenuBarBrandIcon.statusImage
-            : nil
+        updateStatusIcon(
+            on: button,
+            state: presentation.statusIconState
+        )
         button.title = title
         button.imagePosition = switch (
             preferences.showStatusIcon,
@@ -320,6 +327,132 @@ final class MenuBarPanelController: NSObject {
         )
         statusItem?.length = NSStatusItem.variableLength
 
+    }
+
+    private func updateStatusIcon(
+        on button: NSStatusBarButton,
+        state: MenuBarQuotaIconState
+    ) {
+        guard preferences.showStatusIcon else {
+            stopStatusIconAnimation()
+            displayedIconFraction = nil
+            button.image = nil
+            return
+        }
+
+        guard let targetFraction = state.remainingFraction else {
+            stopStatusIconAnimation()
+            displayedIconFraction = nil
+            button.image = MenuBarQuotaIconRenderer.image(
+                for: .unavailable
+            )
+            return
+        }
+
+        guard let currentFraction = displayedIconFraction else {
+            stopStatusIconAnimation()
+            displayedIconFraction = targetFraction
+            button.image = MenuBarQuotaIconRenderer.image(
+                for: .available(remainingFraction: targetFraction)
+            )
+            return
+        }
+
+        if let activeTarget = iconAnimationTargetFraction,
+           abs(activeTarget - targetFraction) < 0.000_1 {
+            return
+        }
+
+        guard abs(currentFraction - targetFraction) >= 0.000_1 else {
+            stopStatusIconAnimation()
+            displayedIconFraction = targetFraction
+            button.image = MenuBarQuotaIconRenderer.image(
+                for: .available(remainingFraction: targetFraction)
+            )
+            return
+        }
+
+        let reducesMotion = NSWorkspace.shared
+            .accessibilityDisplayShouldReduceMotion
+        guard !reducesMotion else {
+            stopStatusIconAnimation()
+            displayedIconFraction = targetFraction
+            button.image = MenuBarQuotaIconRenderer.image(
+                for: .available(remainingFraction: targetFraction)
+            )
+            return
+        }
+
+        startStatusIconAnimation(
+            from: currentFraction,
+            to: targetFraction
+        )
+    }
+
+    private func startStatusIconAnimation(
+        from startFraction: Double,
+        to targetFraction: Double
+    ) {
+        stopStatusIconAnimation()
+        iconAnimationStartTime = ProcessInfo.processInfo.systemUptime
+        iconAnimationStartFraction = startFraction
+        iconAnimationTargetFraction = targetFraction
+
+        let timer = Timer(
+            timeInterval: 1.0 / 60.0,
+            target: self,
+            selector: #selector(advanceStatusIconAnimation(_:)),
+            userInfo: nil,
+            repeats: true
+        )
+        timer.tolerance = 1.0 / 120.0
+        iconAnimationTimer = timer
+        RunLoop.main.add(timer, forMode: .common)
+        advanceStatusIconAnimation(timer)
+    }
+
+    @objc
+    private func advanceStatusIconAnimation(_ timer: Timer) {
+        guard let button = statusItem?.button,
+              preferences.showStatusIcon,
+              let targetFraction = iconAnimationTargetFraction
+        else {
+            stopStatusIconAnimation()
+            return
+        }
+
+        let elapsed = ProcessInfo.processInfo.systemUptime
+            - iconAnimationStartTime
+        let linearProgress = min(
+            max(elapsed / MenuBarQuotaIconModel.animationDuration, 0),
+            1
+        )
+        let easedProgress = MenuBarQuotaIconModel.easeOutProgress(
+            linearProgress
+        )
+        let fraction = MenuBarQuotaIconModel.interpolatedFraction(
+            from: iconAnimationStartFraction,
+            to: targetFraction,
+            progress: easedProgress
+        )
+
+        displayedIconFraction = fraction
+        button.image = MenuBarQuotaIconRenderer.image(
+            for: .available(remainingFraction: fraction)
+        )
+
+        guard linearProgress >= 1 else { return }
+        displayedIconFraction = targetFraction
+        button.image = MenuBarQuotaIconRenderer.image(
+            for: .available(remainingFraction: targetFraction)
+        )
+        stopStatusIconAnimation()
+    }
+
+    private func stopStatusIconAnimation() {
+        iconAnimationTimer?.invalidate()
+        iconAnimationTimer = nil
+        iconAnimationTargetFraction = nil
     }
 
     private func requestGlassSurfaceUpdate(

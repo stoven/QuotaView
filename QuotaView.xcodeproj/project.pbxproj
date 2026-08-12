@@ -50,6 +50,7 @@
 		B1000000000000000000002A /* QuotaViewActivityHook in Embed Helpers */ = {isa = PBXBuildFile; fileRef = F1000000000000000000002F /* QuotaViewActivityHook */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		B1000000000000000000002B /* AppUpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000030 /* AppUpdateController.swift */; };
 		B1000000000000000000002C /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = P20000000000000000000001 /* Sparkle */; };
+		B1000000000000000000002D /* MenuBarQuotaIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = F10000000000000000000031 /* MenuBarQuotaIcon.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,6 +169,7 @@
 		F1000000000000000000002E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		F1000000000000000000002F /* QuotaViewActivityHook */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = QuotaViewActivityHook; sourceTree = BUILT_PRODUCTS_DIR; };
 		F10000000000000000000030 /* AppUpdateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateController.swift; sourceTree = "<group>"; };
+		F10000000000000000000031 /* MenuBarQuotaIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarQuotaIcon.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,6 +249,7 @@
 				F10000000000000000000012 /* CodexTheme.swift */,
 				F10000000000000000000013 /* SettingsView.swift */,
 				F10000000000000000000014 /* MenuBarPanelController.swift */,
+				F10000000000000000000031 /* MenuBarQuotaIcon.swift */,
 				F10000000000000000000015 /* AstaSansFont.swift */,
 				F10000000000000000000016 /* QuotaViewFigmaMenu.swift */,
 				F10000000000000000000018 /* QuotaViewFigmaResetMenu.swift */,
@@ -577,6 +580,7 @@
 				B1000000000000000000000E /* CodexTheme.swift in Sources */,
 				B1000000000000000000000F /* SettingsView.swift in Sources */,
 				B10000000000000000000010 /* MenuBarPanelController.swift in Sources */,
+				B1000000000000000000002D /* MenuBarQuotaIcon.swift in Sources */,
 				B10000000000000000000011 /* AstaSansFont.swift in Sources */,
 				B10000000000000000000012 /* QuotaViewFigmaMenu.swift in Sources */,
 				B10000000000000000000014 /* QuotaViewFigmaResetMenu.swift in Sources */,

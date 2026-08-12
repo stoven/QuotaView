@@ -62,9 +62,11 @@
 > Stable 更新器。正式签名、公证/Staple、GitHub Release/Latest、回下载和
 > 公开签名 appcast 均已完成；详细证据见 [HANDOFF.md](HANDOFF.md)。
 
-> 下一次开发使用全局递增的 `Build 6`。`QV-PRODUCT-APP-UPDATES-003` 仍需
-> 由后续正式版本完成真实 N → N+1 更新验收，因此规格交付状态保持
-> `Verifying`；这不改变 `0.3.5 Build 5` 已作为正式版本发布的事实。
+> 当前本地开发已使用全局递增的 `0.3.5 Build 6`，范围为成本柱与 Token
+> 活动共享蓝灰五级色阶，以及按真实剩余额度动态填充的潮汐窗菜单栏图标；
+> 同时继续承接真实 N → N+1 更新验收。Build 6 尚未发布或获准进入
+> appcast；这不改变 `0.3.5 Build 5` 已作为公开正式版本、GitHub Latest
+> 与当前自动更新条目的事实。
 
 > “Codex 灵动岛多任务适配”已作为 `0.3.2 Preview 1` 发布，交付状态为
 > `Released`。响应速度、当前任务跟随、任务切换与收展节奏仍是公开已知

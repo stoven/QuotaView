@@ -1487,6 +1487,7 @@ struct MenuBarStatusLabel: View {
     var body: some View {
         MenuBarStatusContent(
             showsIcon: preferences.showStatusIcon,
+            iconState: statusIconState,
             textParts: statusTextParts,
             accessibilityText: statusAccessibilityText
         )
@@ -1505,6 +1506,15 @@ struct MenuBarStatusLabel: View {
 
     var statusAccessibilityText: String {
         accessibilityStatus
+    }
+
+    var statusIconState: MenuBarQuotaIconState {
+        guard store.hasCurrentCodexStatus else {
+            return .unavailable
+        }
+        return MenuBarQuotaIconState(
+            remainingPercent: store.snapshot?.remainingPercent
+        )
     }
 
     private var remainingLabel: String {
@@ -1560,13 +1570,14 @@ struct MenuBarStatusLabel: View {
 
 private struct MenuBarStatusContent: View {
     let showsIcon: Bool
+    let iconState: MenuBarQuotaIconState
     let textParts: [String]
     let accessibilityText: String
 
     var body: some View {
         HStack(spacing: 3) {
             if showsIcon {
-                MenuBarBrandIcon()
+                MenuBarBrandIcon(state: iconState)
             }
 
             if !textParts.isEmpty {
@@ -1580,57 +1591,5 @@ private struct MenuBarStatusContent: View {
         .fixedSize(horizontal: true, vertical: false)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityText)
-    }
-}
-
-struct MenuBarBrandIcon: View {
-    private enum Metrics {
-        static let glyphWidth: CGFloat = 15
-        static let height: CGFloat = 16
-        static let nativeTextGap: CGFloat = 3
-        static let desiredTextGap: CGFloat = 8
-        static let trailingGutter = desiredTextGap - nativeTextGap
-        static let canvasWidth = glyphWidth + trailingGutter
-    }
-
-    static let statusImage: NSImage = {
-        let canvasSize = NSSize(
-            width: Metrics.canvasWidth,
-            height: Metrics.height
-        )
-
-        guard let source = NSImage(named: "QuotaViewMenuIcon") else {
-            let image = NSImage(size: canvasSize)
-            image.isTemplate = true
-            return image
-        }
-
-        let image = NSImage(
-            size: canvasSize,
-            flipped: false
-        ) { _ in
-            source.draw(
-                in: NSRect(
-                    x: 0,
-                    y: 0,
-                    width: Metrics.glyphWidth,
-                    height: Metrics.height
-                ),
-                from: NSRect(origin: .zero, size: source.size),
-                operation: .sourceOver,
-                fraction: 1
-            )
-            return true
-        }
-        image.isTemplate = true
-        return image
-    }()
-
-    var body: some View {
-        Image(nsImage: Self.statusImage)
-            .frame(
-                width: Metrics.canvasWidth,
-                height: Metrics.height
-            )
     }
 }

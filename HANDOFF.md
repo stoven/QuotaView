@@ -1,8 +1,8 @@
 # QuotaView 项目 Handoff
 
-更新日期：2026-08-12
+更新日期：2026-08-13
 
-工作区：`/private/tmp/quotaview-033-build5-estimated-cost`
+工作区：`/Users/steven/Projects/QuotaView`
 
 当前生产分支：`main`
 
@@ -22,8 +22,16 @@ Apple 公证 Accepted 并 Staple；正式 ZIP 上传 GitHub Stable/Latest Releas
 手动安装；真实应用内 N → N+1 验收必须由后续获准的 Build 6 或更高正式版
 完成。
 
-下一次开发从全局递增的 `Build 6` 开始；Marketing Version 由产品所有者
-在进入下一阶段时明确，不得把 Build Number 重置为 1。
+当前开发已从全局递增的 `0.3.5 Build 6` 开始。产品所有者于 2026-08-13
+提供蓝灰色阶参考图，并授权成本柱与 Token 活动统一使用五级蓝灰量级色阶；
+随后授权菜单栏潮汐窗图标按真实剩余额度从 100% 满到 0% 空动态变化。
+本轮不改变 Marketing Version，不得把 Build Number 重置为 1。
+
+Build 6 色阶与动态菜单栏图标均处于本地 `Verifying`：70 项测试和
+Universal Release 无签名构建已通过，App、Widget、Hook、Core 与 Sparkle
+均为 `x86_64 arm64`。产品视觉验收、正式签名、公证、tag、Release、回下载
+与 appcast 准入尚未完成；公开 Latest、README 下载入口和公开 appcast
+继续保持 `0.3.5 Build 5`。
 
 当前开发提交不在本文固化；每次会话使用 `git branch --show-current` 和
 `git rev-parse HEAD` 读取，避免 Handoff 在合并后立即陈旧。
@@ -120,14 +128,14 @@ SDD 唯一规格索引：
 | 项目 | 当前值 |
 |---|---|
 | 公开生产基线 | `0.3.5 (Build 5)`，GitHub Latest，已进入公开 Stable appcast |
-| 当前进行中工作 | 后续 `Build 6` 的真实 N → N+1 更新验收；尚未定义新的 Marketing Version 或功能范围 |
-| 当前规格 | `QV-PRODUCT-APP-UPDATES-003` |
+| 当前进行中工作 | `0.3.5 Build 6`：动态菜单栏额度图标与蓝灰色阶等待视觉验收；继续准备真实 N → N+1 更新验收 |
+| 当前规格 | `QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
 | 规格状态 | `Accepted` |
-| 交付状态 | `0.3.5 Build 5` 版本发布为 `Released`；`QV-PRODUCT-APP-UPDATES-003` 保持 `Verifying`，仅因首个更新器版本无法单独完成真实 N → N+1 验收 |
-| 当前生产源码 | 主额度内嵌重置、Spark 周额度、30 日 Tokens、成本估算、半年上限完整网格与“最近一天”语义；仅对预期 Developer ID Team 启用 Sparkle 更新器；不包含 0.3.2 Preview 多任务生产实现 |
-| 发布测试与验收 | 64 项本地测试和 PR #22 CI 通过；Developer ID、公证/Staple、正式 ZIP、GitHub 回下载和公开 appcast 全部验证；完整视觉/辅助功能交叉矩阵仍等待产品所有者逐项验收 |
+| 交付状态 | Build 5 为 `Released`；Build 6 色阶、动态菜单栏图标与更新规格均为 `Verifying` |
+| 当前开发源码 | App / Widget 为 `0.3.5 (6)`；成本柱与 Token 活动已统一蓝灰色阶；潮汐窗菜单栏图标按真实剩余额度动态填充；其他业务行为保持 Build 5 基线 |
+| 发布测试与验收 | Build 6 70 项测试和 Universal 无签名构建通过，版本、双架构与资源完整；所有新视觉与动态图标过渡仍等待产品验收 |
 | 正式本地包 | `/private/tmp/quotaview-033-build5-estimated-cost/dist/QuotaView.app` 与 `dist/QuotaView-v0.3.5-build.5.zip` |
-| 自动更新序列准入 | `0.3.5 Build 5` 已完成准入和部署；后续 GitHub 推送默认不进入 Feed，仍须产品所有者按精确版本主动批准 |
+| 自动更新序列准入 | `0.3.5 Build 5` 已完成准入和部署；Build 6 未获准进入 Feed，任何后续 GitHub 推送默认不进入自动更新序列 |
 | 正式资产 | `QuotaView-v0.3.5-build.5.zip`；`12,747,358 bytes`；SHA-256 `d8524ddf5739501bd797cdd082cc8738a7775d8b994fe99033068af8f821b2e1` |
 | 独立预览版 | `0.3.2 Preview 1` / `v0.3.2-preview.1` 继续作为 GitHub Pre-release 供社区测试 |
 | 本地预览备份 | 分支 `codex/archive-0.3.2-preview.1-multitask-island`；worktree `.worktrees/QuotaView-0.3.2-preview.1-backup`；提交 `f835bcd46a3d0197e9dc09e0b5a25a6d5d69521c` |

@@ -71,6 +71,38 @@ enum EstimatedCostChartMetrics {
     }
 }
 
+enum UsageVisualizationLevel: Equatable {
+    case baseline
+    case low
+    case medium
+    case high
+    case peak
+}
+
+enum UsageVisualizationScale {
+    static func level(
+        value: Double?,
+        maximum: Double
+    ) -> UsageVisualizationLevel {
+        guard let value,
+              value.isFinite,
+              maximum.isFinite,
+              value > 0,
+              maximum > 0
+        else {
+            return .baseline
+        }
+
+        let ratio = min(value / maximum, 1)
+        return switch ratio {
+        case ..<0.25: .low
+        case ..<0.50: .medium
+        case ..<0.75: .high
+        default: .peak
+        }
+    }
+}
+
 struct QuotaViewFigmaMenu: View {
     nonisolated static let designSize = CGSize(width: 274, height: 433)
 
@@ -1956,16 +1988,12 @@ private struct EstimatedCostBars: View {
     }
 
     private func barColor(_ cost: Double) -> Color {
-        guard cost > 0, model.maximumCost > 0 else {
-            return cellPalette.zero
-        }
-        let ratio = cost / model.maximumCost
-        return switch ratio {
-        case ..<0.25: cellPalette.low
-        case ..<0.50: cellPalette.medium
-        case ..<0.75: cellPalette.high
-        default: cellPalette.peak
-        }
+        visualizationPalette.color(
+            for: UsageVisualizationScale.level(
+                value: cost,
+                maximum: model.maximumCost
+            )
+        )
     }
 
     private var maximumCostLabel: String {
@@ -1976,8 +2004,8 @@ private struct EstimatedCostBars: View {
         )
     }
 
-    private var cellPalette: TokenActivityCellPalette {
-        TokenActivityCellPalette.resolved(for: colorScheme)
+    private var visualizationPalette: UsageVisualizationPalette {
+        UsageVisualizationPalette.resolved(for: colorScheme)
     }
 
     private var secondaryTextColor: Color {
@@ -2091,14 +2119,24 @@ private struct TokenActivityTooltipPresentation: Equatable {
     let text: String
 }
 
-private struct TokenActivityCellPalette {
+private struct UsageVisualizationPalette {
     let placeholderFill: Color
     let placeholderBorder: Color
-    let zero: Color
+    let baseline: Color
     let low: Color
     let medium: Color
     let high: Color
     let peak: Color
+
+    func color(for level: UsageVisualizationLevel) -> Color {
+        switch level {
+        case .baseline: baseline
+        case .low: low
+        case .medium: medium
+        case .high: high
+        case .peak: peak
+        }
+    }
 
     static func resolved(for colorScheme: ColorScheme) -> Self {
         if colorScheme == .light {
@@ -2109,22 +2147,62 @@ private struct TokenActivityCellPalette {
                     blue: 58.0 / 255.0
                 ).opacity(0.035),
                 placeholderBorder: Color(white: 0.68),
-                zero: Color(white: 0.80),
-                low: Color(white: 0.64),
-                medium: Color(white: 0.48),
-                high: Color(white: 0.32),
-                peak: Color(white: 0.16)
+                baseline: Color(
+                    red: 228.0 / 255.0,
+                    green: 232.0 / 255.0,
+                    blue: 236.0 / 255.0
+                ),
+                low: Color(
+                    red: 209.0 / 255.0,
+                    green: 220.0 / 255.0,
+                    blue: 229.0 / 255.0
+                ),
+                medium: Color(
+                    red: 168.0 / 255.0,
+                    green: 192.0 / 255.0,
+                    blue: 211.0 / 255.0
+                ),
+                high: Color(
+                    red: 112.0 / 255.0,
+                    green: 152.0 / 255.0,
+                    blue: 184.0 / 255.0
+                ),
+                peak: Color(
+                    red: 53.0 / 255.0,
+                    green: 95.0 / 255.0,
+                    blue: 128.0 / 255.0
+                )
             )
         }
 
         return Self(
             placeholderFill: Color.white.opacity(0.035),
             placeholderBorder: Color(white: 0.32),
-            zero: Color(white: 0.16),
-            low: Color(white: 0.32),
-            medium: Color(white: 0.48),
-            high: Color(white: 0.64),
-            peak: Color(white: 0.80)
+            baseline: Color(
+                red: 45.0 / 255.0,
+                green: 45.0 / 255.0,
+                blue: 45.0 / 255.0
+            ),
+            low: Color(
+                red: 62.0 / 255.0,
+                green: 79.0 / 255.0,
+                blue: 93.0 / 255.0
+            ),
+            medium: Color(
+                red: 86.0 / 255.0,
+                green: 116.0 / 255.0,
+                blue: 140.0 / 255.0
+            ),
+            high: Color(
+                red: 115.0 / 255.0,
+                green: 158.0 / 255.0,
+                blue: 194.0 / 255.0
+            ),
+            peak: Color(
+                red: 148.0 / 255.0,
+                green: 207.0 / 255.0,
+                blue: 255.0 / 255.0
+            )
         )
     }
 }
@@ -2197,14 +2275,14 @@ private struct TokenActivityHeatmap: View {
 
     private var placeholderCell: some View {
         RoundedRectangle(cornerRadius: 2.5, style: .continuous)
-            .fill(cellPalette.placeholderFill)
+            .fill(visualizationPalette.placeholderFill)
             .overlay {
                 RoundedRectangle(
                     cornerRadius: 2.5,
                     style: .continuous
                 )
                 .strokeBorder(
-                    cellPalette.placeholderBorder,
+                    visualizationPalette.placeholderBorder,
                     style: StrokeStyle(
                         lineWidth: 0.75,
                         dash: [2, 2]
@@ -2328,22 +2406,16 @@ private struct TokenActivityHeatmap: View {
     }
 
     private func cellColor(_ tokens: Int64?) -> Color {
-        guard let tokens, tokens > 0 else {
-            return cellPalette.zero
-        }
-
-        let ratio = Double(tokens)
-            / Double(max(model.maximumTokens, 1))
-        return switch ratio {
-        case ..<0.25: cellPalette.low
-        case ..<0.50: cellPalette.medium
-        case ..<0.75: cellPalette.high
-        default: cellPalette.peak
-        }
+        visualizationPalette.color(
+            for: UsageVisualizationScale.level(
+                value: tokens.map(Double.init),
+                maximum: Double(model.maximumTokens)
+            )
+        )
     }
 
-    private var cellPalette: TokenActivityCellPalette {
-        TokenActivityCellPalette.resolved(for: colorScheme)
+    private var visualizationPalette: UsageVisualizationPalette {
+        UsageVisualizationPalette.resolved(for: colorScheme)
     }
 
     private func cellHelp(date: Date, tokens: Int64?) -> String {
