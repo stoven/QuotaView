@@ -71,6 +71,157 @@ enum EstimatedCostChartMetrics {
     }
 }
 
+enum QuotaViewHeaderLogoMetrics {
+    static let size: CGFloat = 24
+    static let cornerRadius: CGFloat = 7.5
+    static let apertureDiameter: CGFloat = 17.5
+    static let notchDiameter: CGFloat = 3.5
+    static let waterlineWidth: CGFloat = 0.75
+}
+
+private struct QuotaViewTideWaveShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(
+            to: CGPoint(
+                x: rect.minX,
+                y: rect.minY + rect.height * 0.58
+            )
+        )
+        path.addCurve(
+            to: CGPoint(
+                x: rect.maxX,
+                y: rect.minY + rect.height * 0.45
+            ),
+            control1: CGPoint(
+                x: rect.minX + rect.width * 0.30,
+                y: rect.minY + rect.height * 0.80
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.width * 0.70,
+                y: rect.minY + rect.height * 0.31
+            )
+        )
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+        path.closeSubpath()
+        return path
+    }
+}
+
+private struct QuotaViewTideWaterlineShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(
+            to: CGPoint(
+                x: rect.minX,
+                y: rect.minY + rect.height * 0.58
+            )
+        )
+        path.addCurve(
+            to: CGPoint(
+                x: rect.maxX,
+                y: rect.minY + rect.height * 0.45
+            ),
+            control1: CGPoint(
+                x: rect.minX + rect.width * 0.30,
+                y: rect.minY + rect.height * 0.80
+            ),
+            control2: CGPoint(
+                x: rect.minX + rect.width * 0.70,
+                y: rect.minY + rect.height * 0.31
+            )
+        )
+        return path
+    }
+}
+
+private struct QuotaViewTideWindowHeaderLogo: View {
+    var body: some View {
+        ZStack {
+            RoundedRectangle(
+                cornerRadius: QuotaViewHeaderLogoMetrics.cornerRadius,
+                style: .continuous
+            )
+            .fill(
+                LinearGradient(
+                    colors: [
+                        Color(red: 1.00, green: 1.00, blue: 0.99),
+                        Color(red: 0.88, green: 0.89, blue: 0.90)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+
+            RoundedRectangle(
+                cornerRadius: QuotaViewHeaderLogoMetrics.cornerRadius,
+                style: .continuous
+            )
+            .stroke(Color.black.opacity(0.16), lineWidth: 0.45)
+
+            ZStack {
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color(red: 0.04, green: 0.09, blue: 0.17),
+                                Color(red: 0.01, green: 0.03, blue: 0.08)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+
+                QuotaViewTideWaveShape()
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                Color(red: 0.05, green: 0.30, blue: 1.00),
+                                Color(red: 0.02, green: 0.17, blue: 0.82)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+
+                QuotaViewTideWaterlineShape()
+                    .stroke(
+                        Color(red: 0.00, green: 0.86, blue: 0.96),
+                        style: StrokeStyle(
+                            lineWidth: QuotaViewHeaderLogoMetrics.waterlineWidth,
+                            lineCap: .round,
+                            lineJoin: .round
+                        )
+                    )
+
+                Circle()
+                    .fill(Color.white.opacity(0.96))
+                    .frame(
+                        width: QuotaViewHeaderLogoMetrics.notchDiameter,
+                        height: QuotaViewHeaderLogoMetrics.notchDiameter
+                    )
+                    .offset(
+                        y: -QuotaViewHeaderLogoMetrics.apertureDiameter / 2
+                    )
+            }
+            .frame(
+                width: QuotaViewHeaderLogoMetrics.apertureDiameter,
+                height: QuotaViewHeaderLogoMetrics.apertureDiameter
+            )
+            .clipShape(Circle())
+            .overlay {
+                Circle()
+                    .stroke(Color.white.opacity(0.38), lineWidth: 0.45)
+            }
+        }
+        .frame(
+            width: QuotaViewHeaderLogoMetrics.size,
+            height: QuotaViewHeaderLogoMetrics.size
+        )
+    }
+}
+
 enum UsageVisualizationLevel: Equatable {
     case baseline
     case low
@@ -285,33 +436,14 @@ struct QuotaViewFigmaMenu: View {
     }
 
     private var appIcon: some View {
-        ZStack {
-            RoundedRectangle(
-                cornerRadius: 7.5,
-                style: .continuous
+        QuotaViewTideWindowHeaderLogo()
+            .shadow(
+                color: Color.black.opacity(0.25),
+                radius: 1.2,
+                x: 0,
+                y: 0.24
             )
-            .fill(Color.white.opacity(0.10))
-
-            Image("QuotaViewFigmaAppIcon")
-                .resizable()
-                .interpolation(.high)
-                .scaledToFill()
-                .frame(width: 31.474, height: 31.474)
-        }
-        .frame(width: 24, height: 24)
-        .clipShape(
-            RoundedRectangle(
-                cornerRadius: 7.5,
-                style: .continuous
-            )
-        )
-        .shadow(
-            color: Color.black.opacity(0.25),
-            radius: 1.2,
-            x: 0,
-            y: 0.24
-        )
-        .accessibilityHidden(true)
+            .accessibilityHidden(true)
     }
 
     private var summary: some View {
@@ -1531,36 +1663,40 @@ struct QuotaViewFigmaMenu: View {
     }
 
     private func compactTokenCount(_ count: Int64?) -> String {
-        guard let count else { return "—" }
-
-        let formatter = NumberFormatter()
-        formatter.locale = Locale(
-            identifier: copy.language.localeIdentifier
-        )
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 1
-        formatter.minimumFractionDigits = 0
-        formatter.usesGroupingSeparator = false
-
-        let magnitude: Double
-        let suffix: String
-        switch abs(count) {
-        case 1_000_000_000...:
-            magnitude = Double(count) / 1_000_000_000
-            suffix = "B"
-        case 1_000_000...:
-            magnitude = Double(count) / 1_000_000
-            suffix = "M"
-        case 1_000...:
-            magnitude = Double(count) / 1_000
-            suffix = "K"
-        default:
-            return String(count)
-        }
-
-        return (formatter.string(from: magnitude as NSNumber) ?? "—")
-            + suffix
+        CompactTokenCountFormatter(
+            localeIdentifier: copy.language.localeIdentifier
+        ).string(from: count)
     }
+}
+
+private enum DailyUsageDisplayCalendar {
+    static func calendar(timeZone: TimeZone) -> Calendar {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.locale = Locale(identifier: "en_US_POSIX")
+        calendar.timeZone = timeZone
+        return calendar
+    }
+
+    static func displayDay(
+        preservingReportingDate date: Date,
+        in calendar: Calendar
+    ) -> Date {
+        let components = utcCalendar.dateComponents(
+            [.year, .month, .day],
+            from: date
+        )
+        guard let localDate = calendar.date(from: components) else {
+            return calendar.startOfDay(for: date)
+        }
+        return calendar.startOfDay(for: localDate)
+    }
+
+    private static let utcCalendar: Calendar = {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.locale = Locale(identifier: "en_US_POSIX")
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        return calendar
+    }()
 }
 
 struct TokenActivityGridModel: Equatable {
@@ -1580,17 +1716,25 @@ struct TokenActivityGridModel: Equatable {
     init(
         activity: [DailyTokenActivity],
         range: AppPreferences.TokenActivityRange,
-        endingAt endDate: Date
+        endingAt endDate: Date,
+        timeZone: TimeZone = .autoupdatingCurrent
     ) {
-        let normalizedEnd = Self.utcCalendar.startOfDay(for: endDate)
+        let calendar = DailyUsageDisplayCalendar.calendar(
+            timeZone: timeZone
+        )
+        let normalizedEnd = calendar.startOfDay(for: endDate)
         let startDate = Self.rangeStartDate(
             activity: activity,
             range: range,
-            endingAt: normalizedEnd
+            endingAt: normalizedEnd,
+            calendar: calendar
         )
         var activityByDay: [Date: Int64] = [:]
         for value in activity where value.tokens >= 0 {
-            let day = Self.utcCalendar.startOfDay(for: value.date)
+            let day = DailyUsageDisplayCalendar.displayDay(
+                preservingReportingDate: value.date,
+                in: calendar
+            )
             guard day >= startDate, day <= normalizedEnd else { continue }
             let (combinedTokens, overflow) = activityByDay[
                 day,
@@ -1604,7 +1748,7 @@ struct TokenActivityGridModel: Equatable {
         var date = startDate
         while date <= normalizedEnd {
             days.append((date, activityByDay[date]))
-            guard let nextDate = Self.utcCalendar.date(
+            guard let nextDate = calendar.date(
                 byAdding: .day,
                 value: 1,
                 to: date
@@ -1642,40 +1786,41 @@ struct TokenActivityGridModel: Equatable {
     private static func rangeStartDate(
         activity: [DailyTokenActivity],
         range: AppPreferences.TokenActivityRange,
-        endingAt endDate: Date
+        endingAt endDate: Date,
+        calendar: Calendar
     ) -> Date {
         switch range {
         case .week:
-            return utcCalendar.date(
+            return calendar.date(
                 byAdding: .day,
                 value: -6,
                 to: endDate
             ) ?? endDate
         case .month:
-            return utcCalendar.date(
+            return calendar.date(
                 byAdding: .day,
                 value: -30,
                 to: endDate
             ) ?? endDate
         case .threeMonths:
-            return utcCalendar.date(
+            return calendar.date(
                 byAdding: .month,
                 value: -3,
                 to: endDate
             ).flatMap {
-                utcCalendar.date(
+                calendar.date(
                     byAdding: .day,
                     value: 1,
                     to: $0
                 )
             } ?? endDate
         case .sixMonths:
-            let boundary = utcCalendar.date(
+            let boundary = calendar.date(
                 byAdding: .month,
                 value: -6,
                 to: endDate
             ).flatMap {
-                utcCalendar.date(
+                calendar.date(
                     byAdding: .day,
                     value: 1,
                     to: $0
@@ -1683,10 +1828,15 @@ struct TokenActivityGridModel: Equatable {
             } ?? endDate
             return activity
                 .filter { $0.tokens >= 0 }
-                .map { utcCalendar.startOfDay(for: $0.date) }
+                .map {
+                    DailyUsageDisplayCalendar.displayDay(
+                        preservingReportingDate: $0.date,
+                        in: calendar
+                    )
+                }
                 .filter { $0 >= boundary && $0 <= endDate }
                 .min()
-                ?? utcCalendar.date(
+                ?? calendar.date(
                     byAdding: .day,
                     value: -30,
                     to: endDate
@@ -1694,13 +1844,6 @@ struct TokenActivityGridModel: Equatable {
                 ?? endDate
         }
     }
-
-    private static let utcCalendar: Calendar = {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.locale = Locale(identifier: "en_US_POSIX")
-        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
-        return calendar
-    }()
 }
 
 struct EstimatedCostChartModel: Equatable {
@@ -1721,17 +1864,24 @@ struct EstimatedCostChartModel: Equatable {
 
     init(
         activity: [DailyTokenActivity],
-        endingAt endDate: Date
+        endingAt endDate: Date,
+        timeZone: TimeZone = .autoupdatingCurrent
     ) {
-        let normalizedEnd = Self.utcCalendar.startOfDay(for: endDate)
-        let startDate = Self.utcCalendar.date(
+        let calendar = DailyUsageDisplayCalendar.calendar(
+            timeZone: timeZone
+        )
+        let normalizedEnd = calendar.startOfDay(for: endDate)
+        let startDate = calendar.date(
             byAdding: .day,
             value: -(EstimatedCostChartMetrics.dayCount - 1),
             to: normalizedEnd
         ) ?? normalizedEnd
         var activityByDay: [Date: Int64] = [:]
         for value in activity {
-            let day = Self.utcCalendar.startOfDay(for: value.date)
+            let day = DailyUsageDisplayCalendar.displayDay(
+                preservingReportingDate: value.date,
+                in: calendar
+            )
             activityByDay[day] = value.tokens
         }
 
@@ -1747,7 +1897,7 @@ struct EstimatedCostChartModel: Equatable {
                     estimatedCost: tokens.flatMap(Self.estimatedCost)
                 )
             )
-            guard let nextDate = Self.utcCalendar.date(
+            guard let nextDate = calendar.date(
                 byAdding: .day,
                 value: 1,
                 to: date
@@ -1776,13 +1926,6 @@ struct EstimatedCostChartModel: Equatable {
         return Double(tokens) / 1_000_000
             * EstimatedCostChartMetrics.cachedInputUSDPerMillionTokens
     }
-
-    private static let utcCalendar: Calendar = {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.locale = Locale(identifier: "en_US_POSIX")
-        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
-        return calendar
-    }()
 }
 
 private struct EstimatedCostTooltipPresentation: Equatable {
@@ -2034,22 +2177,17 @@ private struct EstimatedCostBars: View {
 
     private func dateLabel(_ date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.calendar = Self.utcCalendar
         formatter.locale = Locale(
             identifier: copy.language.localeIdentifier
         )
-        formatter.timeZone = Self.utcCalendar.timeZone
+        formatter.calendar = DailyUsageDisplayCalendar.calendar(
+            timeZone: .autoupdatingCurrent
+        )
+        formatter.timeZone = .autoupdatingCurrent
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
         return formatter.string(from: date)
     }
-
-    private static let utcCalendar: Calendar = {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.locale = Locale(identifier: "en_US_POSIX")
-        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
-        return calendar
-    }()
 }
 
 private func formattedEstimatedUSD(
@@ -2424,11 +2562,13 @@ private struct TokenActivityHeatmap: View {
 
     private func dateLabel(_ date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.calendar = Self.utcCalendar
         formatter.locale = Locale(
             identifier: copy.language.localeIdentifier
         )
-        formatter.timeZone = Self.utcCalendar.timeZone
+        formatter.calendar = DailyUsageDisplayCalendar.calendar(
+            timeZone: .autoupdatingCurrent
+        )
+        formatter.timeZone = .autoupdatingCurrent
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
         return formatter.string(from: date)
@@ -2447,46 +2587,13 @@ private struct TokenActivityHeatmap: View {
     }
 
     private func compactTokenCount(_ count: Int64) -> String {
-        if count == 0 {
-            return "0"
-        }
-        if abs(count) < 1_000 {
-            return count > 0 ? "<1K" : ">-1K"
-        }
-
-        let formatter = NumberFormatter()
-        formatter.locale = Locale(
-            identifier: copy.language.localeIdentifier
+        CompactTokenCountFormatter(
+            localeIdentifier: copy.language.localeIdentifier
+        ).string(
+            from: count,
+            abbreviatesValuesBelowFirstUnit: true
         )
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 1
-        formatter.minimumFractionDigits = 0
-        formatter.usesGroupingSeparator = false
-
-        let magnitude: Double
-        let suffix: String
-        switch abs(count) {
-        case 1_000_000_000...:
-            magnitude = Double(count) / 1_000_000_000
-            suffix = "B"
-        case 1_000_000...:
-            magnitude = Double(count) / 1_000_000
-            suffix = "M"
-        default:
-            magnitude = Double(count) / 1_000
-            suffix = "K"
-        }
-
-        return (formatter.string(from: magnitude as NSNumber) ?? "—")
-            + suffix
     }
-
-    private static let utcCalendar: Calendar = {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.locale = Locale(identifier: "en_US_POSIX")
-        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
-        return calendar
-    }()
 }
 
 struct QuotaViewFigmaDropShadow: NSViewRepresentable {

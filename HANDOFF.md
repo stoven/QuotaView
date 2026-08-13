@@ -25,13 +25,20 @@ Apple 公证 Accepted 并 Staple；正式 ZIP 上传 GitHub Stable/Latest Releas
 当前开发已从全局递增的 `0.3.5 Build 6` 开始。产品所有者于 2026-08-13
 提供蓝灰色阶参考图，并授权成本柱与 Token 活动统一使用五级蓝灰量级色阶；
 随后授权菜单栏潮汐窗图标按真实剩余额度从 100% 满到 0% 空动态变化。
+同日又明确要求简体中文 Token 数值使用万/亿单位，英文继续使用 K/M/B；
+面板列表、Token 活动 Tooltip / 辅助功能与 Widget 已统一复用同一格式器。
+产品所有者并明确要求按日图表与三十日窗口使用电脑当前时区；结束日、范围
+与 Tooltip 已切换为系统时区，同时保留 App Server 每日桶原始报告日期。
+产品所有者随后要求把主面板左上角旧彩色 Logo 替换为已确认的无红点
+潮汐窗方向。
 本轮不改变 Marketing Version，不得把 Build Number 重置为 1。
 
-Build 6 色阶与动态菜单栏图标均处于本地 `Verifying`：70 项测试和
-Universal Release 无签名构建已通过，App、Widget、Hook、Core 与 Sparkle
-均为 `x86_64 arm64`。产品视觉验收、正式签名、公证、tag、Release、回下载
-与 appcast 准入尚未完成；公开 Latest、README 下载入口和公开 appcast
-继续保持 `0.3.5 Build 5`。
+Build 6 Header Logo、色阶、动态菜单栏图标、中文万/亿单位与电脑时区日期
+均处于本地 `Verifying`：74 项测试和 Universal Release 无签名构建已通过，
+App、Widget、Hook、Core 与 Sparkle 均为
+`x86_64 arm64`。产品视觉验收、正式签名、公证、tag、Release、回下载与
+appcast 准入尚未完成；公开 Latest、README 下载入口和公开 appcast 继续
+保持 `0.3.5 Build 5`。
 
 当前开发提交不在本文固化；每次会话使用 `git branch --show-current` 和
 `git rev-parse HEAD` 读取，避免 Handoff 在合并后立即陈旧。
@@ -128,12 +135,12 @@ SDD 唯一规格索引：
 | 项目 | 当前值 |
 |---|---|
 | 公开生产基线 | `0.3.5 (Build 5)`，GitHub Latest，已进入公开 Stable appcast |
-| 当前进行中工作 | `0.3.5 Build 6`：动态菜单栏额度图标与蓝灰色阶等待视觉验收；继续准备真实 N → N+1 更新验收 |
-| 当前规格 | `QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
+| 当前进行中工作 | `0.3.5 Build 6`：主面板 Header 已替换为潮汐窗 Logo；动态菜单栏图标、蓝灰色阶、中文万/亿单位与电脑时区日期等待视觉验收；继续准备真实 N → N+1 更新验收 |
+| 当前规格 | `QV-BRAND-TIDE-WINDOW-005`、`QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
 | 规格状态 | `Accepted` |
-| 交付状态 | Build 5 为 `Released`；Build 6 色阶、动态菜单栏图标与更新规格均为 `Verifying` |
-| 当前开发源码 | App / Widget 为 `0.3.5 (6)`；成本柱与 Token 活动已统一蓝灰色阶；潮汐窗菜单栏图标按真实剩余额度动态填充；其他业务行为保持 Build 5 基线 |
-| 发布测试与验收 | Build 6 70 项测试和 Universal 无签名构建通过，版本、双架构与资源完整；所有新视觉与动态图标过渡仍等待产品验收 |
+| 交付状态 | Build 5 为 `Released`；Build 6 Header Logo、色阶、动态菜单栏图标、中文单位、电脑时区日期与更新规格均为 `Verifying` |
+| 当前开发源码 | App / Widget 为 `0.3.5 (6)`；成本柱与 Token 活动已统一蓝灰色阶；菜单栏使用动态潮汐窗，中文 Token 使用万/亿；按日图表和三十日窗口使用电脑当前时区；主面板 Header 使用原生矢量潮汐窗 Logo |
+| 发布测试与验收 | Build 6 74 项测试和 Universal 无签名构建通过，版本、双架构与资源完整；所有新视觉、动态图标过渡、中文单位与电脑时区日期仍等待产品验收 |
 | 正式本地包 | `/private/tmp/quotaview-033-build5-estimated-cost/dist/QuotaView.app` 与 `dist/QuotaView-v0.3.5-build.5.zip` |
 | 自动更新序列准入 | `0.3.5 Build 5` 已完成准入和部署；Build 6 未获准进入 Feed，任何后续 GitHub 推送默认不进入自动更新序列 |
 | 正式资产 | `QuotaView-v0.3.5-build.5.zip`；`12,747,358 bytes`；SHA-256 `d8524ddf5739501bd797cdd082cc8738a7775d8b994fe99033068af8f821b2e1` |

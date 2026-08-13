@@ -1,0 +1,18 @@
+<svg width="640" height="240" viewBox="0 0 640 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="240" fill="#F2F2F2"/>
+  <rect x="320" width="320" height="240" fill="#232426"/>
+
+  <g transform="translate(66 56) scale(8)" stroke="#17181A" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="7.25" cy="7.25" r="5.75"/>
+    <path d="M4.35 6.25L7.25 9.2L10.15 6.25"/>
+    <path d="M11.35 11.35L14.55 14.55"/>
+  </g>
+  <text x="202" y="147" fill="#17181A" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="48" font-weight="500">64%</text>
+
+  <g transform="translate(386 56) scale(8)" stroke="#F3F3F3" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="7.25" cy="7.25" r="5.75"/>
+    <path d="M4.35 6.25L7.25 9.2L10.15 6.25"/>
+    <path d="M11.35 11.35L14.55 14.55"/>
+  </g>
+  <text x="522" y="147" fill="#F3F3F3" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="48" font-weight="500">64%</text>
+</svg>

@@ -390,6 +390,66 @@ struct AppCopy {
     }
 }
 
+struct CompactTokenCountFormatter {
+    let localeIdentifier: String
+
+    private var usesChineseUnits: Bool {
+        localeIdentifier.lowercased().hasPrefix("zh")
+    }
+
+    func string(
+        from count: Int64?,
+        abbreviatesValuesBelowFirstUnit: Bool = false
+    ) -> String {
+        guard let count else { return "—" }
+
+        let magnitude = count.magnitude
+        let scaledValue: Double
+        let suffix: String
+
+        if usesChineseUnits {
+            if magnitude >= 100_000_000 {
+                scaledValue = Double(count) / 100_000_000
+                suffix = "亿"
+            } else if magnitude >= 10_000 {
+                scaledValue = Double(count) / 10_000
+                suffix = "万"
+            } else {
+                return String(count)
+            }
+        } else {
+            if abbreviatesValuesBelowFirstUnit,
+               magnitude > 0,
+               magnitude < 1_000 {
+                return count > 0 ? "<1K" : ">-1K"
+            }
+
+            if magnitude >= 1_000_000_000 {
+                scaledValue = Double(count) / 1_000_000_000
+                suffix = "B"
+            } else if magnitude >= 1_000_000 {
+                scaledValue = Double(count) / 1_000_000
+                suffix = "M"
+            } else if magnitude >= 1_000 {
+                scaledValue = Double(count) / 1_000
+                suffix = "K"
+            } else {
+                return String(count)
+            }
+        }
+
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: localeIdentifier)
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 1
+        formatter.minimumFractionDigits = 0
+        formatter.usesGroupingSeparator = false
+
+        return (formatter.string(from: scaledValue as NSNumber) ?? "—")
+            + suffix
+    }
+}
+
 private extension UserDefaults {
     func storedBool(forKey key: String, defaultValue: Bool) -> Bool {
         guard object(forKey: key) != nil else { return defaultValue }

@@ -10,11 +10,13 @@
 >
 > 当前生产基线：QuotaView `0.3.5 (Build 5)`
 >
-> 当前进行中工作：`0.3.5 Build 6` 在已完成蓝灰色阶自动化的基础上实现
-> 动态菜单栏额度图标，并继续承接真实 N → N+1 更新验收
+> 当前进行中工作：`0.3.5 Build 6` 在已完成蓝灰色阶、动态菜单栏图标、
+> 中文万/亿 Token 单位与电脑时区日期自动化的基础上替换主面板 Header
+> Logo，并继续承接真实 N → N+1 更新验收
 >
-> 当前交付阶段：公开版本 `Released`（`v0.3.5-build.5`）；Build 6 色阶、
-> 动态菜单栏图标与更新规格均为 `Verifying`
+> 当前交付阶段：公开版本 `Released`（`v0.3.5-build.5`）；Build 6 Header
+> Logo、色阶、动态菜单栏图标、中文单位、电脑时区日期与更新规格均为
+> `Verifying`
 
 ## 1. 本文件的职责
 
@@ -50,12 +52,12 @@
 |---|---|
 | 公开生产版本 | `0.3.5 (Build 5)`；GitHub Latest；已进入公开 Stable appcast |
 | 当前开发代码版本 | `MARKETING_VERSION = 0.3.5`、`CURRENT_PROJECT_VERSION = 6` |
-| 当前迭代 | `0.3.5 Build 6`：完成蓝灰五级色阶验证，实现动态菜单栏额度图标，并继续准备真实 N → N+1 更新验收 |
-| 当前规格 | `QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
+| 当前迭代 | `0.3.5 Build 6`：主面板 Header 已替换为潮汐窗 Logo；色阶、动态菜单栏图标、中文单位与电脑时区日期等待视觉验收；继续准备真实 N → N+1 更新验收 |
+| 当前规格 | `QV-BRAND-TIDE-WINDOW-005`、`QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
 | 规格状态 | `Accepted` |
-| 交付状态 | `0.3.5 Build 5` 为 `Released`；Build 6 色阶、动态菜单栏图标与更新规格均为 `Verifying` |
-| 当前开发源码 | Build 6 已统一蓝灰五级色阶，并实现按真实剩余额度动态填充的潮汐窗菜单栏图标；其他业务与更新器语义保持 Build 5 基线 |
-| 生产自动化 | Build 6 `swift test` 70 项通过、0 失败；Universal Release 无签名构建通过；App、Widget、Hook、Core 与 Sparkle 均为 `x86_64 arm64`，版本与资源完整 |
+| 交付状态 | `0.3.5 Build 5` 为 `Released`；Build 6 Header Logo、色阶、动态菜单栏图标、中文单位、电脑时区日期与更新规格均为 `Verifying` |
+| 当前开发源码 | Build 6 已统一蓝灰五级色阶，实现动态潮汐窗菜单栏图标、中文万/亿 Token 单位与电脑时区日期窗口；主面板 Header 使用原生矢量潮汐窗 Logo；其他业务与更新器语义保持 Build 5 基线 |
+| 生产自动化 | Build 6 `swift test` 74 项通过、0 失败；Universal Release 无签名构建通过；App、Widget、Hook、Core 与 Sparkle 均为 `x86_64 arm64`，版本与资源完整 |
 | 正式 Release | `v0.3.5-build.5` / [QuotaView 0.3.5 Build 5 — Usage Overview and App Updates](https://github.com/Duoasa/QuotaView/releases/tag/v0.3.5-build.5) / 发布提交 `58e676a8317d907107af3d1731ab11a0ded52684` |
 | 正式资产 | `QuotaView-v0.3.5-build.5.zip`；`12,747,358 bytes`；SHA-256 `d8524ddf5739501bd797cdd082cc8738a7775d8b994fe99033068af8f821b2e1`；Apple Submission `88796026-3227-405a-9e1b-900af973c527` |
 | 回下载与 Feed | GitHub 资产与本地公证包逐字节一致；签名、Staple、Gatekeeper、版本、架构和资源复核通过；[公开 appcast](https://duoasa.github.io/QuotaView/appcast.xml) 线上逐字节与 EdDSA 验证通过 |
@@ -69,9 +71,18 @@
   [`QV-PRODUCT-USAGE-OVERVIEW-002`](../design/quotaview-usage-overview-0.3.4.md)
   与 [`QV-PRODUCT-TOKEN-ACTIVITY-001`](../design/quotaview-token-activity.md)
   共同记录；两份规格均为 `Accepted / Verifying`；
+- Build 6 中文万/亿 Token 单位由 `USAGE-OVERVIEW-13` 与
+  `TOKEN-ACTIVITY-10` 共同记录；面板、Tooltip、辅助功能与 Widget 共享
+  格式化规则，英文行为保持不变；
+- Build 6 电脑时区日期边界由 `USAGE-OVERVIEW-14` 与
+  `TOKEN-ACTIVITY-11` 共同记录；日期窗口跟随电脑时区，服务端日期型报告桶
+  保留原始年、月、日；
 - 动态菜单栏额度图标由
   [`QV-PRODUCT-DYNAMIC-MENU-BAR-004`](../design/quotaview-dynamic-menu-bar-icon-0.3.5-build6.md)
   以 `Accepted / Verifying` 记录；自动化已通过，等待产品视觉验收，未授权发布；
+- 主面板 Header Logo 由
+  [`QV-BRAND-TIDE-WINDOW-005`](../design/quotaview-tide-window-header-logo-0.3.5-build6.md)
+  以 `Accepted / Verifying` 记录；只替换 24 pt 品牌图形，不改变 AppIcon；
 - 更新器真实 N → N+1 继续由
   [`QV-PRODUCT-APP-UPDATES-003`](../design/quotaview-app-updates-0.3.5.md)
   以 `Accepted / Verifying` 记录；
@@ -117,9 +128,10 @@
 |---|---|---|---|---|---|
 | `QV-GOVERNANCE-001` | [AGENTS.md](../../AGENTS.md) | 治理规范 | `Accepted` | — | 长期产品、实现、验证与发布约束 |
 | `QV-PRODUCT-ACTIVITY-ISLAND-001` | [单任务灵动岛产品规格](../design/quotaview-codex-activity-widget-product.md) | 已发布功能规格 | `Accepted` | `Released` | `0.3.1` 单任务生产行为基线 |
+| `QV-BRAND-TIDE-WINDOW-005` | [潮汐窗 Header Logo 规格](../design/quotaview-tide-window-header-logo-0.3.5-build6.md) | 当前品牌规格 | `Accepted` | `Verifying` | Build 6 已替换主面板左上角旧彩色 Logo；自动化通过，等待视觉验收 |
 | `QV-PRODUCT-DYNAMIC-MENU-BAR-004` | [动态菜单栏图标规格](../design/quotaview-dynamic-menu-bar-icon-0.3.5-build6.md) | 当前功能规格 | `Accepted` | `Verifying` | Build 6 按真实剩余额度动态填充潮汐窗图标；自动化通过，等待视觉验收 |
-| `QV-PRODUCT-TOKEN-ACTIVITY-001` | [Token 活动图表规格](../design/quotaview-token-activity.md) | 当前功能规格 | `Accepted` | `Verifying` | `0.3.3` 基线已发布；Build 6 共享蓝灰五级色阶自动化通过，等待视觉验收 |
-| `QV-PRODUCT-USAGE-OVERVIEW-002` | [0.3.4 用量概览扩展规格](../design/quotaview-usage-overview-0.3.4.md) | 当前功能规格 | `Accepted` | `Verifying` | Build 5 基线已发布；Build 6 成本柱蓝灰色阶自动化通过，等待视觉验收 |
+| `QV-PRODUCT-TOKEN-ACTIVITY-001` | [Token 活动图表规格](../design/quotaview-token-activity.md) | 当前功能规格 | `Accepted` | `Verifying` | `0.3.3` 基线已发布；Build 6 共享蓝灰色阶、中文万/亿单位与电脑时区日期等待视觉验收 |
+| `QV-PRODUCT-USAGE-OVERVIEW-002` | [0.3.4 用量概览扩展规格](../design/quotaview-usage-overview-0.3.4.md) | 当前功能规格 | `Accepted` | `Verifying` | Build 5 基线已发布；Build 6 成本柱蓝灰色阶、中文万/亿单位与电脑时区三十日窗口等待视觉验收 |
 | `QV-PRODUCT-APP-UPDATES-003` | [0.3.5 应用检查与更新规格](../design/quotaview-app-updates-0.3.5.md) | 当前功能规格 | `Accepted` | `Verifying` | Build 5 已发布并上线 Feed；等待后续正式 Build 完成 N → N+1 |
 | `QV-PRODUCT-ACTIVITY-ISLAND-MULTITASK-001` | [多任务灵动岛规格](../design/quotaview-codex-activity-island-multitask.md) | 预览版功能规格 | `Accepted` | `Released` | `0.3.2 Preview 1` 独立预览行为基线；不映射到 0.3.3 稳定源码 |
 | `QV-DESIGN-WIDGET-001` | [WidgetKit 接入规格](../design/quotaview-widgetkit-solution.md) | 架构/功能规格 | `Accepted` | `Released` | Widget 数据、Target 与验证边界 |
@@ -164,15 +176,17 @@
 | `USAGE-OVERVIEW-01` | 主额度内嵌重置信息并移除独立面板开关 | `QuotaViewFigmaMenu`、`AppPreferences` + 代码审查 | 已实现；菜单栏倒计时开关保持独立 |
 | `USAGE-OVERVIEW-02` | `codex_bengalfox` 独立 Spark 窗口与 fail-soft | `CodexProviderAdapter` + `CodexModelsTests` | 映射、缺失和越界降级通过 |
 | `USAGE-OVERVIEW-03` | Spark 紧凑中性图表、隐藏条件与动态高度 | `QuotaViewFigmaMenu` + 产品所有者验收 | 产品所有者确认，并批准为 Build 1 基线 |
-| `USAGE-OVERVIEW-04` | 最近三十日 Token 汇总 | `EstimatedCostChartModel` + 行为测试 | UTC 三十日边界、窗口外排除与汇总通过 |
+| `USAGE-OVERVIEW-04` | 最近三十日 Token 汇总 | `EstimatedCostChartModel` + 行为测试 | Build 5 UTC 边界已发布；Build 6 电脑时区边界测试通过 |
 | `USAGE-OVERVIEW-05` | `$0.50/M` 缓存输入成本估算与非账单语义 | `EstimatedCostChartModel`、`SettingsView` + 行为测试 | 公式、三十柱几何和缺失数据语义通过 |
 | `USAGE-OVERVIEW-06` | 设置顺序、默认值、持久化与 usage Demand | `AppPreferences`、`CodexStatusStore` + 偏好测试 | 实现完成，五项 usage 消费者共同控制可选请求 |
 | `USAGE-OVERVIEW-07` | 顶部固定动态面板、状态、语言与 AX | 面板高度模型 + 代码审查 | 自动化边界通过；完整交叉矩阵仍等待逐项验收 |
 | `USAGE-OVERVIEW-08` | 验证与发布门禁 | 64 项测试、CI、Universal、版本、架构、资源、签名、公证、Release 与回下载 | 已由 `0.3.5 Build 5` 完成正式发布门禁 |
 | `USAGE-OVERVIEW-09` | 版本与发布控制 | `AGENTS.md`、`HANDOFF.md`、版本配置 | `0.3.5 (5)` 已发布；后续 Build 从 6 全局递增 |
 | `USAGE-OVERVIEW-10` | 半年历史上限、连续日期格与完整 16 列占位网格 | `TokenActivityGridModel` + 行为测试 | 实现与自动化通过；等待产品验收 |
-| `USAGE-OVERVIEW-11` | 最近一天与真实 UTC 日桶语义一致 | `CurrentCodexPresentation`、成本模型 + 行为测试 | 实现与自动化通过；等待产品验收 |
-| `USAGE-OVERVIEW-12` | 成本柱共享蓝灰五级色阶 | `UsageVisualizationScale`、色板与边界测试 | 实现、65 项测试和 Universal 构建通过；等待视觉验收 |
+| `USAGE-OVERVIEW-11` | 最近一天与服务器报告日桶语义一致 | `CurrentCodexPresentation`、成本模型 + 行为测试 | 原始报告日期保留与最近有效桶语义通过；等待产品验收 |
+| `USAGE-OVERVIEW-12` | 成本柱共享蓝灰五级色阶 | `UsageVisualizationScale`、色板与边界测试 | 实现、74 项测试和 Universal 构建通过；等待视觉验收 |
+| `USAGE-OVERVIEW-13` | 中文 Token 使用万/亿，英文保留 K/M/B | `CompactTokenCountFormatter`、面板与 Widget 投影测试 | 实现、74 项测试和 Universal 构建通过；等待视觉验收 |
+| `USAGE-OVERVIEW-14` | 30 日 Tokens 与成本图使用电脑当前时区 | `EstimatedCostChartModel` + 正负时区行为测试 | 上海、洛杉矶结束日与空当天位置通过；等待产品验收 |
 
 ### 5.2 Token 活动追踪矩阵
 
@@ -187,7 +201,9 @@
 | `TOKEN-ACTIVITY-05` | 顶部固定的动态菜单尺寸 | `MenuBarPanelController` + 几何测试 | 收缩与扩展均由产品所有者确认不跳动 |
 | `TOKEN-ACTIVITY-06` | 设置开关、默认月与 Usage Demand | `AppPreferences`、`SettingsView` + 偏好测试 | 实现完成 |
 | `TOKEN-ACTIVITY-07` | 发布门禁 | 57 项测试、CI、Universal、签名、公证、Release 与回下载验证 | 完成；交付状态为 `Released` |
-| `TOKEN-ACTIVITY-09` | Token 活动与成本柱共享蓝灰区间 | 参考图色值、`UsageVisualizationScale` 与边界测试 | 实现、65 项测试和 Universal 构建通过；等待视觉验收 |
+| `TOKEN-ACTIVITY-09` | Token 活动与成本柱共享蓝灰区间 | 参考图色值、`UsageVisualizationScale` 与边界测试 | 实现、74 项测试和 Universal 构建通过；等待视觉验收 |
+| `TOKEN-ACTIVITY-10` | Tooltip 与 AX 使用语言对应的紧凑单位 | `CompactTokenCountFormatter` + 本地化边界测试 | 实现、74 项测试和 Universal 构建通过；等待视觉验收 |
+| `TOKEN-ACTIVITY-11` | 日期范围与 Tooltip 使用电脑当前时区 | `TokenActivityGridModel` + 正负时区行为测试 | 上海、洛杉矶结束日、报告日期保留与空当天格通过；等待产品验收 |
 
 ### 5.3 动态菜单栏图标追踪矩阵
 
@@ -198,7 +214,16 @@
 | `MENU-ICON-03` | 首次直达、后续 `0.18 s` 过渡与减少动态效果 | 控制器代码审查 + 插值端点测试 | 已实现；等待动效验收 |
 | `MENU-ICON-04` | 无数据与真实 0% 区分、保留本地化辅助功能 | 状态模型、位图区分与既有 AX 文本 | 已实现；等待视觉验收 |
 | `MENU-ICON-05` | 菜单栏偏好、设置预览与入口不变量 | `SettingsView`、`MenuBarPanelController` + 既有偏好测试 | 已实现；等待设置预览验收 |
-| `MENU-ICON-06` | 测试、Universal 构建与产品视觉验收 | 70 项测试、Universal 无签名构建 | 自动化通过；等待产品验收 |
+| `MENU-ICON-06` | 测试、Universal 构建与产品视觉验收 | 74 项测试、Universal 无签名构建 | 自动化通过；等待产品验收 |
+
+### 5.4 潮汐窗 Header Logo 追踪矩阵
+
+| Requirement ID | 规格范围 | 当前证据 | 当前结论 |
+|---|---|---|---|
+| `BRAND-HEADER-01` | 无红点潮汐窗视觉语言 | 产品所有者确认 + 原生矢量源码 | 已实现；等待视觉验收 |
+| `BRAND-HEADER-02` | `24 × 24 pt`、`7.5 pt` 圆角与 Header 布局不变量 | 几何常量测试 + 代码审查 | 自动化通过；等待视觉验收 |
+| `BRAND-HEADER-03` | 原生矢量、深浅外观与小尺寸识别 | Impeccable 检查 + Universal 构建 | 自动化通过；等待视觉验收 |
+| `BRAND-HEADER-04` | AX、测试、Universal 构建与产品验收 | 74 项测试、Universal 无签名构建 | 自动化通过；等待产品验收 |
 
 0.3.2 Preview 的多任务 Requirement 与发布证据继续由其独立规格维护；不得
 用其 `Released` 状态推导多任务实现已进入 0.3.5 稳定版。

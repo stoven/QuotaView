@@ -120,35 +120,9 @@ private struct WidgetMetricFormatter {
     }
 
     func compactTokenCount(_ count: Int64?) -> String {
-        guard let count else {
-            return "—"
-        }
-
-        let magnitude: Double
-        let suffix: String
-        switch abs(count) {
-        case 1_000_000_000...:
-            magnitude = Double(count) / 1_000_000_000
-            suffix = "B"
-        case 1_000_000...:
-            magnitude = Double(count) / 1_000_000
-            suffix = "M"
-        case 1_000...:
-            magnitude = Double(count) / 1_000
-            suffix = "K"
-        default:
-            return String(count)
-        }
-
-        let formatter = NumberFormatter()
-        formatter.locale = Locale(identifier: localeIdentifier)
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 1
-        formatter.minimumFractionDigits = 0
-        formatter.usesGroupingSeparator = false
-
-        return (formatter.string(from: magnitude as NSNumber) ?? "—")
-            + suffix
+        CompactTokenCountFormatter(
+            localeIdentifier: localeIdentifier
+        ).string(from: count)
     }
 }
 

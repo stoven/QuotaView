@@ -40,13 +40,13 @@ final class WidgetSnapshotWriterTests: XCTestCase {
                 WidgetAuxiliaryMetric(
                     id: WidgetAuxiliaryMetricIdentifier.todayTokens,
                     label: "今日 Tokens",
-                    formattedValue: "42K"
+                    formattedValue: "4.2万"
                 ),
                 WidgetAuxiliaryMetric(
                     id: WidgetAuxiliaryMetricIdentifier
                         .lifetimeTokens,
                     label: "累计 Tokens",
-                    formattedValue: "9M"
+                    formattedValue: "900万"
                 )
             ]
         )
@@ -61,6 +61,57 @@ final class WidgetSnapshotWriterTests: XCTestCase {
         XCTAssertFalse(encodedText.contains("account"))
         XCTAssertFalse(encodedText.contains("authorization"))
         XCTAssertFalse(encodedText.contains("prompt"))
+    }
+
+    func testCompactTokenFormatterUsesLocalizedUnits() {
+        let chinese = CompactTokenCountFormatter(
+            localeIdentifier: "zh-Hans"
+        )
+        let english = CompactTokenCountFormatter(
+            localeIdentifier: "en"
+        )
+
+        XCTAssertEqual(chinese.string(from: nil), "—")
+        XCTAssertEqual(chinese.string(from: 0), "0")
+        XCTAssertEqual(chinese.string(from: 9_999), "9999")
+        XCTAssertEqual(chinese.string(from: 10_000), "1万")
+        XCTAssertEqual(chinese.string(from: 42_000), "4.2万")
+        XCTAssertEqual(chinese.string(from: 9_000_000), "900万")
+        XCTAssertEqual(chinese.string(from: 418_700_000), "4.2亿")
+        XCTAssertEqual(chinese.string(from: 6_500_000_000), "65亿")
+        XCTAssertEqual(chinese.string(from: -15_000), "-1.5万")
+
+        XCTAssertEqual(english.string(from: 999), "999")
+        XCTAssertEqual(english.string(from: 1_000), "1K")
+        XCTAssertEqual(english.string(from: 418_700_000), "418.7M")
+        XCTAssertEqual(english.string(from: 6_500_000_000), "6.5B")
+    }
+
+    func testCompactTokenFormatterKeepsChineseSubWanValuesExact() {
+        let chinese = CompactTokenCountFormatter(
+            localeIdentifier: "zh-CN"
+        )
+        let english = CompactTokenCountFormatter(
+            localeIdentifier: "en"
+        )
+
+        XCTAssertEqual(
+            chinese.string(
+                from: 999,
+                abbreviatesValuesBelowFirstUnit: true
+            ),
+            "999"
+        )
+        XCTAssertEqual(
+            english.string(
+                from: 999,
+                abbreviatesValuesBelowFirstUnit: true
+            ),
+            "<1K"
+        )
+        XCTAssertFalse(
+            chinese.string(from: Int64.min).isEmpty
+        )
     }
 
     func testProjectorDoesNotKeepProviderDataWhenUnavailable() {

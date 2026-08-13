@@ -1189,7 +1189,8 @@ final class AppBehaviorTests: XCTestCase {
             let model = TokenActivityGridModel(
                 activity: activity,
                 range: range,
-                endingAt: endDate
+                endingAt: endDate,
+                timeZone: calendar.timeZone
             )
             let placeholderCount = model.cells
                 .prefix { $0.isPlaceholder }
@@ -1213,7 +1214,8 @@ final class AppBehaviorTests: XCTestCase {
         let week = TokenActivityGridModel(
             activity: activity,
             range: .week,
-            endingAt: endDate
+            endingAt: endDate,
+            timeZone: calendar.timeZone
         )
         XCTAssertEqual(week.dayCount, 7)
         XCTAssertEqual(week.rowCount, 1)
@@ -1235,7 +1237,8 @@ final class AppBehaviorTests: XCTestCase {
         let month = TokenActivityGridModel(
             activity: activity,
             range: .month,
-            endingAt: endDate
+            endingAt: endDate,
+            timeZone: calendar.timeZone
         )
         XCTAssertEqual(month.dayCount, 31)
         XCTAssertEqual(month.rowCount, 2)
@@ -1250,7 +1253,8 @@ final class AppBehaviorTests: XCTestCase {
         let sixMonths = TokenActivityGridModel(
             activity: activity,
             range: .sixMonths,
-            endingAt: endDate
+            endingAt: endDate,
+            timeZone: calendar.timeZone
         )
         let expectedSixMonthDays = try XCTUnwrap(
             calendar.dateComponents(
@@ -1279,7 +1283,8 @@ final class AppBehaviorTests: XCTestCase {
                 DailyTokenActivity(date: endDate, tokens: 3_000)
             ],
             range: .sixMonths,
-            endingAt: endDate
+            endingAt: endDate,
+            timeZone: calendar.timeZone
         )
         XCTAssertEqual(partialHistory.dayCount, 40)
         XCTAssertEqual(partialHistory.rowCount, 3)
@@ -1295,7 +1300,8 @@ final class AppBehaviorTests: XCTestCase {
         let empty = TokenActivityGridModel(
             activity: [],
             range: .sixMonths,
-            endingAt: endDate
+            endingAt: endDate,
+            timeZone: calendar.timeZone
         )
         XCTAssertEqual(empty.dayCount, 31)
         XCTAssertEqual(empty.rowCount, 2)
@@ -1340,7 +1346,8 @@ final class AppBehaviorTests: XCTestCase {
                 DailyTokenActivity(date: yesterday, tokens: 25_000_000),
                 DailyTokenActivity(date: endDate, tokens: 75_000_000)
             ],
-            endingAt: endDate
+            endingAt: endDate,
+            timeZone: calendar.timeZone
         )
 
         XCTAssertEqual(model.days.count, 30)
@@ -1384,7 +1391,8 @@ final class AppBehaviorTests: XCTestCase {
             activity: [
                 DailyTokenActivity(date: yesterday, tokens: 25_000_000)
             ],
-            endingAt: endDate
+            endingAt: endDate,
+            timeZone: calendar.timeZone
         )
         XCTAssertNil(noTodayBucket.todayCost)
         XCTAssertEqual(
@@ -1392,6 +1400,108 @@ final class AppBehaviorTests: XCTestCase {
             12.50,
             accuracy: 0.000_001
         )
+    }
+
+    @MainActor
+    func testDailyUsageChartsUseComputerTimeZoneWithoutShiftingReportingDates()
+    throws {
+        var utcCalendar = Calendar(identifier: .gregorian)
+        utcCalendar.locale = Locale(identifier: "en_US_POSIX")
+        utcCalendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        let august12ReportingDate = try XCTUnwrap(
+            DateComponents(
+                calendar: utcCalendar,
+                timeZone: utcCalendar.timeZone,
+                year: 2026,
+                month: 8,
+                day: 12
+            ).date
+        )
+        let activity = [
+            DailyTokenActivity(
+                date: august12ReportingDate,
+                tokens: 4_000_000
+            )
+        ]
+
+        for identifier in ["Asia/Shanghai", "America/Los_Angeles"] {
+            let timeZone = try XCTUnwrap(TimeZone(identifier: identifier))
+            var localCalendar = Calendar(identifier: .gregorian)
+            localCalendar.locale = Locale(identifier: "en_US_POSIX")
+            localCalendar.timeZone = timeZone
+            let localNow = try XCTUnwrap(
+                DateComponents(
+                    calendar: localCalendar,
+                    timeZone: timeZone,
+                    year: 2026,
+                    month: 8,
+                    day: 13,
+                    hour: 2,
+                    minute: 45
+                ).date
+            )
+            let localAugust12 = try XCTUnwrap(
+                DateComponents(
+                    calendar: localCalendar,
+                    timeZone: timeZone,
+                    year: 2026,
+                    month: 8,
+                    day: 12
+                ).date
+            )
+            let localAugust13 = try XCTUnwrap(
+                DateComponents(
+                    calendar: localCalendar,
+                    timeZone: timeZone,
+                    year: 2026,
+                    month: 8,
+                    day: 13
+                ).date
+            )
+
+            let tokenActivity = TokenActivityGridModel(
+                activity: activity,
+                range: .week,
+                endingAt: localNow,
+                timeZone: timeZone
+            )
+            XCTAssertEqual(
+                Array(tokenActivity.cells.compactMap(\.date).suffix(2)),
+                [localAugust12, localAugust13],
+                identifier
+            )
+            XCTAssertEqual(
+                tokenActivity.cells.first(where: {
+                    $0.date == localAugust12
+                })?.tokens,
+                4_000_000,
+                identifier
+            )
+            XCTAssertNil(
+                tokenActivity.cells.first(where: {
+                    $0.date == localAugust13
+                })?.tokens,
+                identifier
+            )
+
+            let estimatedCost = EstimatedCostChartModel(
+                activity: activity,
+                endingAt: localNow,
+                timeZone: timeZone
+            )
+            XCTAssertEqual(
+                estimatedCost.days.suffix(2).map(\.date),
+                [localAugust12, localAugust13],
+                identifier
+            )
+            XCTAssertNil(estimatedCost.todayCost, identifier)
+            XCTAssertEqual(
+                estimatedCost.latestCost ?? -1,
+                2,
+                accuracy: 0.000_001,
+                identifier
+            )
+        }
     }
 
     func testUsageVisualizationScaleCoversAllBoundaries() {
@@ -1462,6 +1572,14 @@ final class AppBehaviorTests: XCTestCase {
             UsageVisualizationScale.level(value: 120, maximum: 100),
             .peak
         )
+    }
+
+    func testHeaderLogoKeepsAcceptedCompactGeometry() {
+        XCTAssertEqual(QuotaViewHeaderLogoMetrics.size, 24)
+        XCTAssertEqual(QuotaViewHeaderLogoMetrics.cornerRadius, 7.5)
+        XCTAssertEqual(QuotaViewHeaderLogoMetrics.apertureDiameter, 17.5)
+        XCTAssertEqual(QuotaViewHeaderLogoMetrics.notchDiameter, 3.5)
+        XCTAssertEqual(QuotaViewHeaderLogoMetrics.waterlineWidth, 0.75)
     }
 
     func testMenuBarQuotaIconClampsRemainingPercent() {
