@@ -255,7 +255,7 @@ struct QuotaViewWidgetView: View {
         HStack(spacing: 4) {
             Image(palette.logoAssetName)
                 .resizable()
-                .frame(width: 10.875, height: 12)
+                .frame(width: 12, height: 12)
                 .accessibilityHidden(true)
             Text("QuotaView")
                 .font(AstaSans.semiBold(12))

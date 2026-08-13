@@ -10,13 +10,12 @@
 >
 > 当前生产基线：QuotaView `0.3.5 (Build 5)`
 >
-> 当前进行中工作：`0.3.5 Build 6` 在既有视觉与数据改动验证基础上，按
-> `QV-ARCH-PERSONAL-SIGNING-006` 将本地开发签名迁移到 Personal Team
-> `7KP9UX9AA3`，并重新验证 Widget App Group 数据共享
+> 当前进行中工作：`0.3.5 Build 6` 已把 Widget 左上角旧单色 Logo 替换为
+> 专用 `12 pt` 潮汐窗矢量，正在等待产品所有者视觉验收
 >
-> 当前交付阶段：公开版本 `Released`（`v0.3.5-build.5`）；Build 6 个人签名
-> 迁移、Header Logo、色阶、动态菜单栏图标、中文单位、电脑时区日期与更新
-> 规格均为 `Verifying`
+> 当前交付阶段：公开版本 `Released`（`v0.3.5-build.5`）；Widget Logo 与
+> Build 6 个人签名迁移、Header Logo、色阶、动态菜单栏图标、
+> 中文单位、电脑时区日期与更新规格均为 `Verifying`
 
 ## 1. 本文件的职责
 
@@ -52,18 +51,18 @@
 |---|---|
 | 公开生产版本 | `0.3.5 (Build 5)`；GitHub Latest；已进入公开 Stable appcast |
 | 当前开发代码版本 | `MARKETING_VERSION = 0.3.5`、`CURRENT_PROJECT_VERSION = 6` |
-| 当前迭代 | `0.3.5 Build 6`：将本地开发签名迁移至 Personal Team `7KP9UX9AA3`，使用新 Bundle ID 与 App Group 修复 Widget 快照读取；既有视觉改动继续等待验收 |
+| 当前迭代 | `0.3.5 Build 6`：Widget 左上角已改用专用 `12 pt` 潮汐窗矢量；与既有 Build 6 视觉改动共同等待产品验收 |
 | 当前规格 | `QV-ARCH-PERSONAL-SIGNING-006`、`QV-DESIGN-WIDGET-001`、`QV-BRAND-TIDE-WINDOW-005`、`QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
 | 规格状态 | `Accepted` |
-| 交付状态 | `0.3.5 Build 5` 为 `Released`；Build 6 个人签名迁移、视觉、数据与更新规格均为 `Verifying` |
+| 交付状态 | `0.3.5 Build 5` 为 `Released`；Build 6 Widget Logo、个人签名迁移、视觉、数据与更新规格均为 `Verifying` |
 | 当前开发源码 | Build 6 正迁移到 App `com.stoven.quotaview`、Widget `com.stoven.quotaview.widget`、App Group `7KP9UX9AA3.com.stoven.quotaview.shared`；公开 Build 5 身份与更新信任链不变 |
-| 生产自动化 | Build 6 `swift test` 74 项通过、0 失败；Universal Release 使用 `Apple Development: Steven He (8U28H2PZU6)` 签名；App、Widget、Hook 均为 Team `7KP9UX9AA3`，App Group 与双架构校验通过 |
+| 生产自动化 | Build 6 `swift test` 74 项通过、0 失败；Universal Release 使用 `Apple Development: Steven He (8U28H2PZU6)` 签名；App、Widget、Hook 均为 Team `7KP9UX9AA3`，App Group、双架构与 Widget Logo 矢量资源编译校验通过 |
 | 正式 Release | `v0.3.5-build.5` / [QuotaView 0.3.5 Build 5 — Usage Overview and App Updates](https://github.com/Duoasa/QuotaView/releases/tag/v0.3.5-build.5) / 发布提交 `58e676a8317d907107af3d1731ab11a0ded52684` |
 | 正式资产 | `QuotaView-v0.3.5-build.5.zip`；`12,747,358 bytes`；SHA-256 `d8524ddf5739501bd797cdd082cc8738a7775d8b994fe99033068af8f821b2e1`；Apple Submission `88796026-3227-405a-9e1b-900af973c527` |
 | 回下载与 Feed | GitHub 资产与本地公证包逐字节一致；签名、Staple、Gatekeeper、版本、架构和资源复核通过；[公开 appcast](https://duoasa.github.io/QuotaView/appcast.xml) 线上逐字节与 EdDSA 验证通过 |
 | 独立预览版 | `0.3.2 (Build 1) Preview 1` / `v0.3.2-preview.1` / [GitHub Pre-release](https://github.com/Duoasa/QuotaView/releases/tag/v0.3.2-preview.1)，继续保留供社区测试 |
 | 本地预览备份 | 分支 `codex/archive-0.3.2-preview.1-multitask-island`；worktree `.worktrees/QuotaView-0.3.2-preview.1-backup`；提交 `f835bcd46a3d0197e9dc09e0b5a25a6d5d69521c` |
-| 当前验收 | 新签名主 App 已写入新容器，系统访问为 `APPROVED`；产品所有者于 2026-08-13 重新添加新 Bundle ID Widget 后确认数据与视觉验收成功；真实 N → N+1 仍等待正式资产 |
+| 当前验收 | 新签名主 App 已写入新容器，系统访问为 `APPROVED`；产品所有者于 2026-08-13 已确认新 Bundle ID Widget 的数据与原布局，后续替换的潮汐窗 Logo 仍等待视觉确认；真实 N → N+1 仍等待正式资产 |
 
 ### 当前迭代边界
 
@@ -84,9 +83,10 @@
 - 动态菜单栏额度图标由
   [`QV-PRODUCT-DYNAMIC-MENU-BAR-004`](../design/quotaview-dynamic-menu-bar-icon-0.3.5-build6.md)
   以 `Accepted / Verifying` 记录；自动化已通过，等待产品视觉验收，未授权发布；
-- 主面板 Header Logo 由
+- 主面板 Header 与 Widget Logo 由
   [`QV-BRAND-TIDE-WINDOW-005`](../design/quotaview-tide-window-header-logo-0.3.5-build6.md)
-  以 `Accepted / Verifying` 记录；只替换 24 pt 品牌图形，不改变 AppIcon；
+  以 `Accepted / Verifying` 记录；Header 与 Widget 专用 `12 pt` 潮汐窗矢量
+  均已完成实现和自动化构建验证，不改变 AppIcon，等待视觉验收；
 - 更新器真实 N → N+1 继续由
   [`QV-PRODUCT-APP-UPDATES-003`](../design/quotaview-app-updates-0.3.5.md)
   以 `Accepted / Verifying` 记录；
@@ -132,7 +132,7 @@
 |---|---|---|---|---|---|
 | `QV-GOVERNANCE-001` | [AGENTS.md](../../AGENTS.md) | 治理规范 | `Accepted` | — | 长期产品、实现、验证与发布约束 |
 | `QV-PRODUCT-ACTIVITY-ISLAND-001` | [单任务灵动岛产品规格](../design/quotaview-codex-activity-widget-product.md) | 已发布功能规格 | `Accepted` | `Released` | `0.3.1` 单任务生产行为基线 |
-| `QV-BRAND-TIDE-WINDOW-005` | [潮汐窗 Header Logo 规格](../design/quotaview-tide-window-header-logo-0.3.5-build6.md) | 当前品牌规格 | `Accepted` | `Verifying` | Build 6 已替换主面板左上角旧彩色 Logo；自动化通过，等待视觉验收 |
+| `QV-BRAND-TIDE-WINDOW-005` | [潮汐窗品牌 Logo 规格](../design/quotaview-tide-window-header-logo-0.3.5-build6.md) | 当前品牌规格 | `Accepted` | `Verifying` | Header 与 Widget 专用 12 pt 潮汐窗矢量已完成实现、测试与构建，等待视觉验收 |
 | `QV-PRODUCT-DYNAMIC-MENU-BAR-004` | [动态菜单栏图标规格](../design/quotaview-dynamic-menu-bar-icon-0.3.5-build6.md) | 当前功能规格 | `Accepted` | `Verifying` | Build 6 按真实剩余额度动态填充潮汐窗图标；自动化通过，等待视觉验收 |
 | `QV-PRODUCT-TOKEN-ACTIVITY-001` | [Token 活动图表规格](../design/quotaview-token-activity.md) | 当前功能规格 | `Accepted` | `Verifying` | `0.3.3` 基线已发布；Build 6 共享蓝灰色阶、中文万/亿单位与电脑时区日期等待视觉验收 |
 | `QV-PRODUCT-USAGE-OVERVIEW-002` | [0.3.4 用量概览扩展规格](../design/quotaview-usage-overview-0.3.4.md) | 当前功能规格 | `Accepted` | `Verifying` | Build 5 基线已发布；Build 6 成本柱蓝灰色阶、中文万/亿单位与电脑时区三十日窗口等待视觉验收 |
@@ -221,7 +221,7 @@
 | `MENU-ICON-05` | 菜单栏偏好、设置预览与入口不变量 | `SettingsView`、`MenuBarPanelController` + 既有偏好测试 | 已实现；等待设置预览验收 |
 | `MENU-ICON-06` | 测试、Universal 构建与产品视觉验收 | 74 项测试、Universal 无签名构建 | 自动化通过；等待产品验收 |
 
-### 5.4 潮汐窗 Header Logo 追踪矩阵
+### 5.4 潮汐窗品牌 Logo 追踪矩阵
 
 | Requirement ID | 规格范围 | 当前证据 | 当前结论 |
 |---|---|---|---|
@@ -229,6 +229,8 @@
 | `BRAND-HEADER-02` | `24 × 24 pt`、`7.5 pt` 圆角与 Header 布局不变量 | 几何常量测试 + 代码审查 | 自动化通过；等待视觉验收 |
 | `BRAND-HEADER-03` | 原生矢量、深浅外观与小尺寸识别 | Impeccable 检查 + Universal 构建 | 自动化通过；等待视觉验收 |
 | `BRAND-HEADER-04` | AX、测试、Universal 构建与产品验收 | 74 项测试、Universal 无签名构建 | 自动化通过；等待产品验收 |
+| `BRAND-WIDGET-05` | Widget 专用 `12 × 12 pt` 无红点潮汐窗矢量 | 深浅 SVG + Asset Catalog / `assetutil` 校验 | 已实现；等待视觉验收 |
+| `BRAND-WIDGET-06` | Widget 布局、AX、深浅资源、测试与构建不变量 | 代码审查、74 项测试、Personal Team Universal 构建 | 自动化通过；等待产品验收 |
 
 0.3.2 Preview 的多任务 Requirement 与发布证据继续由其独立规格维护；不得
 用其 `Released` 状态推导多任务实现已进入 0.3.5 稳定版。

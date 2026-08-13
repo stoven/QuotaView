@@ -9,7 +9,10 @@
 > 原始设计基线：QuotaView `0.1.5 (Build 6)`<br>
 > 当前生产基线：QuotaView `0.3.5 (Build 5)`；本版未改变 WidgetKit 数据与界面契约<br>
 > 当前开发校准：`0.3.5 Build 6` 按 `QV-ARCH-PERSONAL-SIGNING-006`
-> 迁移至 Personal Team `7KP9UX9AA3`；公开 Build 5 历史身份不变<br>
+> 迁移至 Personal Team `7KP9UX9AA3`；品牌标识按
+> `QV-BRAND-TIDE-WINDOW-005` 已迁移为 Widget 专用 12 pt 潮汐窗矢量并进入
+> 视觉验收；公开
+> Build 5 历史身份不变<br>
 > 编写日期：2026-07-28<br>
 > SDD 状态更新：2026-08-04<br>
 > 适用平台：macOS 14 及以上<br>
@@ -719,6 +722,10 @@ Widget 使用系统原生容器与 QuotaView 已确认的紧凑数据排版：
 - 系统动态圆角与内边距；
 - 深浅色跟随 WidgetKit；
 - Increase Contrast 和 Reduced Motion 自动适配。
+
+Build 6 的左上角品牌标识由 `QV-BRAND-TIDE-WINDOW-005` 唯一约束：Small 与
+Medium 共用专为 `12 × 12 pt` 适配的无红点潮汐窗矢量，图标继续作为装饰从
+辅助功能树隐藏，不改变标题、连接状态点或 Widget 数据布局。
 
 不复制：
 
