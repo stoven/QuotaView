@@ -213,6 +213,8 @@ Codex App Server thread/list
 - 将当前签名 Helper 更新到固定路径
   `~/Library/Application Support/QuotaView/Helpers/QuotaViewActivityHook`；
 - 合并写入 `~/.codex/hooks.json`；
+- 每个 QuotaView Handler 使用 `QV <官方事件名>` 作为 `statusMessage`，让
+  Codex `/hooks` 与运行状态明确显示 `QV` 前缀；官方事件键保持不变；
 - 保留既有 Hook；
 - 安装前创建 `hooks.json.quotaview-backup`；
 - 重复安装先移除旧 QuotaView Handler，不产生重复项；
@@ -317,6 +319,8 @@ QuotaView 收到当前固定 Hook 定义产生的第一条真实
 - 设置用 CLI 的事件在 Codex Desktop 重启前不能建立连接证据；
 - 固定路径 Helper 安装与更新；
 - Hook 安装、重复安装、卸载、既有配置保留和无效配置拒绝；
+- 11 个 QuotaView Handler 均使用 `QV` 前缀状态名称，旧无前缀定义会触发
+  定义更新与重新信任；
 - 只有真实 `UserPromptSubmit` 能建立“已连接”证据；
 - Helper、App 与 Widget 的 Universal 架构；
 - 0.3.1 (Build 1) 版本信息。

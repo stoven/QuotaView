@@ -619,6 +619,19 @@ final class AppBehaviorTests: XCTestCase {
                 }.count,
                 1
             )
+            let quotaViewHandlers = groups.flatMap { group in
+                (group["hooks"] as? [[String: Any]] ?? [])
+                    .filter {
+                        (($0["command"] as? String) ?? "")
+                            .contains("QuotaViewActivityHook")
+                    }
+            }
+            XCTAssertEqual(
+                quotaViewHandlers.compactMap {
+                    $0["statusMessage"] as? String
+                },
+                ["QV \(event.rawValue)"]
+            )
             XCTAssertTrue(
                 commands.contains {
                     $0.contains(installedHelperURL.path)
@@ -627,6 +640,36 @@ final class AppBehaviorTests: XCTestCase {
                 }
             )
         }
+
+        var legacyRoot = installedRoot
+        var legacyHooks = try XCTUnwrap(
+            legacyRoot["hooks"] as? [String: Any]
+        )
+        var legacySessionStart = try XCTUnwrap(
+            legacyHooks[
+                CodexActivityHookEvent.sessionStart.rawValue
+            ] as? [[String: Any]]
+        )
+        var legacyGroup = try XCTUnwrap(legacySessionStart.first)
+        var legacyHandlers = try XCTUnwrap(
+            legacyGroup["hooks"] as? [[String: Any]]
+        )
+        legacyHandlers[0].removeValue(forKey: "statusMessage")
+        legacyGroup["hooks"] = legacyHandlers
+        legacySessionStart[0] = legacyGroup
+        legacyHooks[CodexActivityHookEvent.sessionStart.rawValue] =
+            legacySessionStart
+        legacyRoot["hooks"] = legacyHooks
+        try JSONSerialization.data(
+            withJSONObject: legacyRoot,
+            options: [.prettyPrinted]
+        ).write(to: hooksURL)
+
+        XCTAssertFalse(try installer.isInstalled())
+        let repairedInstallation = try installer.install()
+        XCTAssertTrue(repairedInstallation.hookDefinitionChanged)
+        XCTAssertTrue(try installer.isInstalled())
+
         let postToolGroups = try XCTUnwrap(
             installedHooks[
                 CodexActivityHookEvent.postToolUse.rawValue

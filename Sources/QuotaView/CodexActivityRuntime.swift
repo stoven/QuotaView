@@ -2051,6 +2051,7 @@ struct CodexActivityHookInstaller: Sendable {
     }
 
     private static let commandMarker = "QuotaViewActivityHook"
+    private static let statusMessagePrefix = "QV "
     private static let eventNames = CodexActivityHookEvent.allCases
         .map(\.rawValue)
 
@@ -2111,6 +2112,8 @@ struct CodexActivityHookInstaller: Sendable {
             return groups.contains { group in
                 handlers(in: group).contains {
                     command(in: $0) == expectedCommand
+                        && statusMessage(in: $0)
+                            == Self.statusMessage(for: eventName)
                 }
             }
         }
@@ -2157,6 +2160,9 @@ struct CodexActivityHookInstaller: Sendable {
                 "hooks": [[
                     "type": "command",
                     "command": command,
+                    "statusMessage": Self.statusMessage(
+                        for: eventName
+                    ),
                     "timeout": timeout
                 ]]
             ])
@@ -2339,6 +2345,14 @@ struct CodexActivityHookInstaller: Sendable {
 
     private func command(in handler: [String: Any]) -> String {
         handler["command"] as? String ?? ""
+    }
+
+    private func statusMessage(in handler: [String: Any]) -> String {
+        handler["statusMessage"] as? String ?? ""
+    }
+
+    private static func statusMessage(for eventName: String) -> String {
+        statusMessagePrefix + eventName
     }
 
     private func shellQuote(_ value: String) -> String {
