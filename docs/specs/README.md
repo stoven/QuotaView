@@ -10,13 +10,13 @@
 >
 > 当前生产基线：QuotaView `0.3.5 (Build 5)`
 >
-> 当前进行中工作：`0.3.5 Build 6` 在已完成蓝灰色阶、动态菜单栏图标、
-> 中文万/亿 Token 单位与电脑时区日期自动化的基础上替换主面板 Header
-> Logo，并继续承接真实 N → N+1 更新验收
+> 当前进行中工作：`0.3.5 Build 6` 在既有视觉与数据改动验证基础上，按
+> `QV-ARCH-PERSONAL-SIGNING-006` 将本地开发签名迁移到 Personal Team
+> `7KP9UX9AA3`，并重新验证 Widget App Group 数据共享
 >
-> 当前交付阶段：公开版本 `Released`（`v0.3.5-build.5`）；Build 6 Header
-> Logo、色阶、动态菜单栏图标、中文单位、电脑时区日期与更新规格均为
-> `Verifying`
+> 当前交付阶段：公开版本 `Released`（`v0.3.5-build.5`）；Build 6 个人签名
+> 迁移、Header Logo、色阶、动态菜单栏图标、中文单位、电脑时区日期与更新
+> 规格均为 `Verifying`
 
 ## 1. 本文件的职责
 
@@ -52,18 +52,18 @@
 |---|---|
 | 公开生产版本 | `0.3.5 (Build 5)`；GitHub Latest；已进入公开 Stable appcast |
 | 当前开发代码版本 | `MARKETING_VERSION = 0.3.5`、`CURRENT_PROJECT_VERSION = 6` |
-| 当前迭代 | `0.3.5 Build 6`：主面板 Header 已替换为潮汐窗 Logo；色阶、动态菜单栏图标、中文单位与电脑时区日期等待视觉验收；继续准备真实 N → N+1 更新验收 |
-| 当前规格 | `QV-BRAND-TIDE-WINDOW-005`、`QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
+| 当前迭代 | `0.3.5 Build 6`：将本地开发签名迁移至 Personal Team `7KP9UX9AA3`，使用新 Bundle ID 与 App Group 修复 Widget 快照读取；既有视觉改动继续等待验收 |
+| 当前规格 | `QV-ARCH-PERSONAL-SIGNING-006`、`QV-DESIGN-WIDGET-001`、`QV-BRAND-TIDE-WINDOW-005`、`QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
 | 规格状态 | `Accepted` |
-| 交付状态 | `0.3.5 Build 5` 为 `Released`；Build 6 Header Logo、色阶、动态菜单栏图标、中文单位、电脑时区日期与更新规格均为 `Verifying` |
-| 当前开发源码 | Build 6 已统一蓝灰五级色阶，实现动态潮汐窗菜单栏图标、中文万/亿 Token 单位与电脑时区日期窗口；主面板 Header 使用原生矢量潮汐窗 Logo；其他业务与更新器语义保持 Build 5 基线 |
-| 生产自动化 | Build 6 `swift test` 74 项通过、0 失败；Universal Release 无签名构建通过；App、Widget、Hook、Core 与 Sparkle 均为 `x86_64 arm64`，版本与资源完整 |
+| 交付状态 | `0.3.5 Build 5` 为 `Released`；Build 6 个人签名迁移、视觉、数据与更新规格均为 `Verifying` |
+| 当前开发源码 | Build 6 正迁移到 App `com.stoven.quotaview`、Widget `com.stoven.quotaview.widget`、App Group `7KP9UX9AA3.com.stoven.quotaview.shared`；公开 Build 5 身份与更新信任链不变 |
+| 生产自动化 | Build 6 `swift test` 74 项通过、0 失败；Universal Release 使用 `Apple Development: Steven He (8U28H2PZU6)` 签名；App、Widget、Hook 均为 Team `7KP9UX9AA3`，App Group 与双架构校验通过 |
 | 正式 Release | `v0.3.5-build.5` / [QuotaView 0.3.5 Build 5 — Usage Overview and App Updates](https://github.com/Duoasa/QuotaView/releases/tag/v0.3.5-build.5) / 发布提交 `58e676a8317d907107af3d1731ab11a0ded52684` |
 | 正式资产 | `QuotaView-v0.3.5-build.5.zip`；`12,747,358 bytes`；SHA-256 `d8524ddf5739501bd797cdd082cc8738a7775d8b994fe99033068af8f821b2e1`；Apple Submission `88796026-3227-405a-9e1b-900af973c527` |
 | 回下载与 Feed | GitHub 资产与本地公证包逐字节一致；签名、Staple、Gatekeeper、版本、架构和资源复核通过；[公开 appcast](https://duoasa.github.io/QuotaView/appcast.xml) 线上逐字节与 EdDSA 验证通过 |
 | 独立预览版 | `0.3.2 (Build 1) Preview 1` / `v0.3.2-preview.1` / [GitHub Pre-release](https://github.com/Duoasa/QuotaView/releases/tag/v0.3.2-preview.1)，继续保留供社区测试 |
 | 本地预览备份 | 分支 `codex/archive-0.3.2-preview.1-multitask-island`；worktree `.worktrees/QuotaView-0.3.2-preview.1-backup`；提交 `f835bcd46a3d0197e9dc09e0b5a25a6d5d69521c` |
-| 当前验收 | 产品所有者已于 2026-08-13 提供蓝灰色阶参考图并授权 Build 6 实现；自动化通过，视觉验收待完成；真实 N → N+1 仍等待正式资产 |
+| 当前验收 | 新签名主 App 已写入新容器，系统访问为 `APPROVED`；产品所有者于 2026-08-13 重新添加新 Bundle ID Widget 后确认数据与视觉验收成功；真实 N → N+1 仍等待正式资产 |
 
 ### 当前迭代边界
 
@@ -71,6 +71,10 @@
   [`QV-PRODUCT-USAGE-OVERVIEW-002`](../design/quotaview-usage-overview-0.3.4.md)
   与 [`QV-PRODUCT-TOKEN-ACTIVITY-001`](../design/quotaview-token-activity.md)
   共同记录；两份规格均为 `Accepted / Verifying`；
+- Build 6 本地签名迁移由
+  [`QV-ARCH-PERSONAL-SIGNING-006`](../design/quotaview-personal-signing-migration-0.3.5-build6.md)
+  以 `Accepted / Verifying` 记录；签名构建、新容器写入与重新添加 Widget 后的
+  实机数据/视觉验收均通过；旧公开身份与 appcast 不变；
 - Build 6 中文万/亿 Token 单位由 `USAGE-OVERVIEW-13` 与
   `TOKEN-ACTIVITY-10` 共同记录；面板、Tooltip、辅助功能与 Widget 共享
   格式化规则，英文行为保持不变；
@@ -135,6 +139,7 @@
 | `QV-PRODUCT-APP-UPDATES-003` | [0.3.5 应用检查与更新规格](../design/quotaview-app-updates-0.3.5.md) | 当前功能规格 | `Accepted` | `Verifying` | Build 5 已发布并上线 Feed；等待后续正式 Build 完成 N → N+1 |
 | `QV-PRODUCT-ACTIVITY-ISLAND-MULTITASK-001` | [多任务灵动岛规格](../design/quotaview-codex-activity-island-multitask.md) | 预览版功能规格 | `Accepted` | `Released` | `0.3.2 Preview 1` 独立预览行为基线；不映射到 0.3.3 稳定源码 |
 | `QV-DESIGN-WIDGET-001` | [WidgetKit 接入规格](../design/quotaview-widgetkit-solution.md) | 架构/功能规格 | `Accepted` | `Released` | Widget 数据、Target 与验证边界 |
+| `QV-ARCH-PERSONAL-SIGNING-006` | [Build 6 个人签名迁移规格](../design/quotaview-personal-signing-migration-0.3.5-build6.md) | 当前架构/构建规格 | `Accepted` | `Verifying` | Personal Team 签名、Universal 构建、新容器写入及新 Widget 实机数据/视觉验收通过；尚未发布 |
 | `QV-EXEC-CORE-002` | [核心架构演进规格](../design/quotaview-core-architecture-evolution.md) | 架构规格 | `Accepted` | `Released`（Phase 0–2、4A–4B；Phase 3 部分） | Token 活动使用官方每日桶；SQLite History 与 Phase 5–7 尚未实施 |
 | `QV-EVIDENCE-CORE-0.2.0-001` | [0.2.0 重构报告](../design/quotaview-core-refactor-0.2.0-report.md) | 验证证据 | `Archived` | `Released` | 历史实施与测试证据 |
 | `QV-EVIDENCE-DESIGN-QA-001` | [主项目 Design QA](../../design-qa.md) | 验收证据 | — | — | 生产视觉验收历史，证据状态 `Active` |

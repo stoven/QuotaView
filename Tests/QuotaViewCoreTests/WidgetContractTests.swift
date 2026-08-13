@@ -6,7 +6,7 @@ final class WidgetContractTests: XCTestCase {
     func testDefaultAppGroupUsesDeveloperTeamPrefix() {
         XCTAssertEqual(
             QuotaViewWidgetConfiguration.defaultAppGroupIdentifier,
-            "BUUH229D5Q.com.quotaview.shared"
+            "7KP9UX9AA3.com.stoven.quotaview.shared"
         )
     }
 

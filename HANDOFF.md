@@ -33,12 +33,21 @@ Apple 公证 Accepted 并 Staple；正式 ZIP 上传 GitHub Stable/Latest Releas
 潮汐窗方向。
 本轮不改变 Marketing Version，不得把 Build Number 重置为 1。
 
-Build 6 Header Logo、色阶、动态菜单栏图标、中文万/亿单位与电脑时区日期
-均处于本地 `Verifying`：74 项测试和 Universal Release 无签名构建已通过，
-App、Widget、Hook、Core 与 Sparkle 均为
-`x86_64 arm64`。产品视觉验收、正式签名、公证、tag、Release、回下载与
-appcast 准入尚未完成；公开 Latest、README 下载入口和公开 appcast 继续
-保持 `0.3.5 Build 5`。
+产品所有者随后明确放弃旧团队 `BUUH229D5Q` 作为后续本地开发签名身份，
+授权使用自己的 Personal Team `7KP9UX9AA3`。Build 6 正按
+`QV-ARCH-PERSONAL-SIGNING-006` 迁移到主 App `com.stoven.quotaview`、Widget
+`com.stoven.quotaview.widget` 与 App Group
+`7KP9UX9AA3.com.stoven.quotaview.shared`。该迁移不改写公开 Build 5 的历史
+身份、Release 或 appcast；个人签名版默认不进入旧更新序列。
+
+Build 6 个人签名迁移、Header Logo、色阶、动态菜单栏图标、中文万/亿单位与
+电脑时区日期均处于本地 `Verifying`：74 项测试通过；Universal Release 使用
+`Apple Development: Steven He (8U28H2PZU6)` 签名，App、Widget 与 Helper
+的 Team ID 均为 `7KP9UX9AA3`，新容器写入获得系统 `APPROVED`。等待产品
+所有者验收。产品所有者于 2026-08-13 移除旧 Widget 并重新添加新 Bundle ID
+Widget，确认额度、方案、重置时间、Credits 与 Token 数据显示正常，验收成功。
+Developer ID、公证、tag、Release、回下载与 appcast 准入尚未执行；公开
+Latest、README 下载入口和公开 appcast 继续保持 `0.3.5 Build 5`。
 
 当前开发提交不在本文固化；每次会话使用 `git branch --show-current` 和
 `git rev-parse HEAD` 读取，避免 Handoff 在合并后立即陈旧。
@@ -135,12 +144,13 @@ SDD 唯一规格索引：
 | 项目 | 当前值 |
 |---|---|
 | 公开生产基线 | `0.3.5 (Build 5)`，GitHub Latest，已进入公开 Stable appcast |
-| 当前进行中工作 | `0.3.5 Build 6`：主面板 Header 已替换为潮汐窗 Logo；动态菜单栏图标、蓝灰色阶、中文万/亿单位与电脑时区日期等待视觉验收；继续准备真实 N → N+1 更新验收 |
-| 当前规格 | `QV-BRAND-TIDE-WINDOW-005`、`QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
+| 当前进行中工作 | `0.3.5 Build 6`：本地签名迁移到 Personal Team `7KP9UX9AA3`，用新 Bundle ID/App Group 恢复 Widget 快照读取；既有视觉改动等待验收 |
+| 当前规格 | `QV-ARCH-PERSONAL-SIGNING-006`、`QV-DESIGN-WIDGET-001`、`QV-BRAND-TIDE-WINDOW-005`、`QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
 | 规格状态 | `Accepted` |
-| 交付状态 | Build 5 为 `Released`；Build 6 Header Logo、色阶、动态菜单栏图标、中文单位、电脑时区日期与更新规格均为 `Verifying` |
-| 当前开发源码 | App / Widget 为 `0.3.5 (6)`；成本柱与 Token 活动已统一蓝灰色阶；菜单栏使用动态潮汐窗，中文 Token 使用万/亿；按日图表和三十日窗口使用电脑当前时区；主面板 Header 使用原生矢量潮汐窗 Logo |
-| 发布测试与验收 | Build 6 74 项测试和 Universal 无签名构建通过，版本、双架构与资源完整；所有新视觉、动态图标过渡、中文单位与电脑时区日期仍等待产品验收 |
+| 交付状态 | Build 5 为 `Released`；Build 6 个人签名迁移、Header Logo、色阶、动态图标、中文单位、电脑时区日期与更新规格均为 `Verifying` |
+| 当前开发源码 | App / Widget 为 `0.3.5 (6)`；正迁移到 `com.stoven.quotaview` / `com.stoven.quotaview.widget` 与 `7KP9UX9AA3.com.stoven.quotaview.shared`；公开 Build 5 身份保持不变 |
+| 发布测试与验收 | Build 6 74 项测试通过；Universal Release 由 Personal Team 签名，App/Widget/Helper Team、版本、双架构、App Group 与新容器写入通过；产品所有者于 2026-08-13 确认新 Widget 数据与视觉验收成功 |
+| 当前个人签名包 | `dist/QuotaView.app` 与 `dist/QuotaView-v0.3.5-build.6.zip`；SHA-256 `3955623af06f8aa68ed953716bf3e828b1ff7199a885eb3a3f68bd3c0e356b49`；未公证、未发布 |
 | 正式本地包 | `/private/tmp/quotaview-033-build5-estimated-cost/dist/QuotaView.app` 与 `dist/QuotaView-v0.3.5-build.5.zip` |
 | 自动更新序列准入 | `0.3.5 Build 5` 已完成准入和部署；Build 6 未获准进入 Feed，任何后续 GitHub 推送默认不进入自动更新序列 |
 | 正式资产 | `QuotaView-v0.3.5-build.5.zip`；`12,747,358 bytes`；SHA-256 `d8524ddf5739501bd797cdd082cc8738a7775d8b994fe99033068af8f821b2e1` |

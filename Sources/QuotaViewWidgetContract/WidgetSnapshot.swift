@@ -3,7 +3,7 @@ import Foundation
 public enum QuotaViewWidgetConfiguration {
     public static let kind = "QuotaViewUsageWidget"
     public static let defaultAppGroupIdentifier =
-        "BUUH229D5Q.com.quotaview.shared"
+        "7KP9UX9AA3.com.stoven.quotaview.shared"
     public static let snapshotFileName = "QuotaViewWidgetSnapshot.json"
     public static let snapshotLifetime: TimeInterval = 15 * 60
     public static let minimumTimelineReloadInterval: TimeInterval = 5 * 60

@@ -13,6 +13,10 @@ app_entitlements="${project_dir}/Support/QuotaView.entitlements"
 widget_entitlements="${project_dir}/Support/QuotaViewWidget.entitlements"
 version="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "${info_plist}")"
 build_number="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "${info_plist}")"
+app_bundle_identifier="$(
+    /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "${info_plist}"
+)"
+expected_widget_bundle_identifier="${app_bundle_identifier}.widget"
 app_group_identifier="$(
     /usr/libexec/PlistBuddy \
         -c 'Print :QuotaViewAppGroupIdentifier' \
@@ -215,6 +219,7 @@ widget_signature_details="$(
 helper_signature_details="$(
     codesign -dv --verbose=4 "${activity_helper}" 2>&1
 )"
+app_group_team_identifier="${app_group_identifier%%.*}"
 if [[ "${signing_identity}" == "-" ]]; then
     if print -r -- "${signature_details}" | grep -q 'flags=.*runtime' \
         || print -r -- "${widget_signature_details}" \
@@ -235,6 +240,30 @@ else
             | grep -q 'flags=.*runtime'; then
         print -u2 \
             "Signed app, widget, or activity helper is missing the Hardened Runtime flag."
+        exit 4
+    fi
+
+    app_signing_team="$(
+        print -r -- "${signature_details}" \
+            | sed -n 's/^TeamIdentifier=//p' \
+            | head -n 1
+    )"
+    widget_signing_team="$(
+        print -r -- "${widget_signature_details}" \
+            | sed -n 's/^TeamIdentifier=//p' \
+            | head -n 1
+    )"
+    helper_signing_team="$(
+        print -r -- "${helper_signature_details}" \
+            | sed -n 's/^TeamIdentifier=//p' \
+            | head -n 1
+    )"
+    if [[ "${app_signing_team}" != "${app_group_team_identifier}" ]] \
+        || [[ "${widget_signing_team}" != "${app_group_team_identifier}" ]] \
+        || [[ "${helper_signing_team}" != "${app_group_team_identifier}" ]]; then
+        print -u2 \
+            "Signing Team ID must match the App Group prefix: " \
+            "${app_group_team_identifier}"
         exit 4
     fi
 fi
@@ -322,7 +351,7 @@ if [[ "${widget_version}" != "${version}" ]] \
 fi
 
 if [[ "${widget_bundle_identifier}" \
-        != "com.quotaview.menubar.widget" ]]; then
+        != "${expected_widget_bundle_identifier}" ]]; then
     print -u2 \
         "Unexpected widget bundle identifier: ${widget_bundle_identifier}"
     exit 4
@@ -445,7 +474,7 @@ if [[ "${app_entitlement_details}" \
     exit 4
 fi
 
-if [[ "${app_group_identifier}" != "BUUH229D5Q."* ]] \
+if [[ "${#app_group_team_identifier}" -ne 10 ]] \
     && [[ ! -f "${staging_app}/Contents/embedded.provisionprofile" ]]; then
     print -u2 \
         "Notarized direct distribution requires a team-prefixed App Group " \

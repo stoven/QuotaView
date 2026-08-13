@@ -9,7 +9,7 @@
     <key>CFBundleExecutable</key>
     <string>QuotaView</string>
     <key>CFBundleIdentifier</key>
-    <string>com.quotaview.menubar</string>
+    <string>com.stoven.quotaview</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
@@ -31,7 +31,7 @@
     <key>NSPrincipalClass</key>
     <string>NSApplication</string>
     <key>QuotaViewAppGroupIdentifier</key>
-    <string>BUUH229D5Q.com.quotaview.shared</string>
+    <string>7KP9UX9AA3.com.stoven.quotaview.shared</string>
     <key>QuotaViewUpdateTeamIdentifier</key>
     <string>BUUH229D5Q</string>
     <key>SUFeedURL</key>

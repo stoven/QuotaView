@@ -1,12 +1,12 @@
 #include "Shared.xcconfig"
 
 PRODUCT_NAME = QuotaView
-PRODUCT_BUNDLE_IDENTIFIER = com.quotaview.menubar
+PRODUCT_BUNDLE_IDENTIFIER = com.stoven.quotaview
 MARKETING_VERSION = 0.3.5
 CURRENT_PROJECT_VERSION = 6
 
-QUOTAVIEW_APP_GROUP_ID = BUUH229D5Q.com.quotaview.shared
-QUOTAVIEW_WIDGET_BUNDLE_ID = com.quotaview.menubar.widget
+QUOTAVIEW_APP_GROUP_ID = 7KP9UX9AA3.com.stoven.quotaview.shared
+QUOTAVIEW_WIDGET_BUNDLE_ID = com.stoven.quotaview.widget
 
 GENERATE_INFOPLIST_FILE = NO
 INFOPLIST_FILE = Support/Info.plist
