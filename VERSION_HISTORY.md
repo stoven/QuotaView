@@ -65,9 +65,10 @@
 > 当前本地开发已使用全局递增的 `0.3.5 Build 6`，范围为成本柱与 Token
 > 活动共享蓝灰五级色阶、按真实剩余额度动态填充的潮汐窗菜单栏图标，以及
 > 简体中文万/亿 Token 紧凑单位、电脑时区日期窗口和主面板原生矢量潮汐窗
-> Header Logo、Widget 专用 `12 pt` 潮汐窗矢量；同时继续承接真实 N → N+1
-> 更新验收。74 项测试和 Personal Team Universal Release 构建已通过，视觉
-> 结果仍等待产品所有者验收。
+> Header Logo、Widget 专用 `12 pt` 潮汐窗矢量，以及与 ChatGPT Logo 统一
+> 光学尺寸的 Footer 同步/设置图形；同时继续承接真实 N → N+1 更新验收。
+> Footer 资源与最新 Personal Team Universal Release 构建已通过；完整测试
+> 复跑停滞于既有 Demo Reset 用例，视觉结果仍等待产品所有者验收。
 > Build 6 尚未发布或获准进入
 > appcast；这不改变 `0.3.5 Build 5` 已作为公开正式版本、GitHub Latest
 > 与当前自动更新条目的事实。

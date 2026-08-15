@@ -1,6 +1,6 @@
 # QuotaView 项目 Handoff
 
-更新日期：2026-08-13
+更新日期：2026-08-14
 
 工作区：`/Users/steven/Projects/QuotaView`
 
@@ -51,6 +51,14 @@ Widget，确认额度、方案、重置时间、Credits 与 Token 数据及原�
 替换后的潮汐窗 Logo 仍等待产品所有者视觉确认。
 Developer ID、公证、tag、Release、回下载与 appcast 准入尚未执行；公开
 Latest、README 下载入口和公开 appcast 继续保持 `0.3.5 Build 5`。
+
+产品所有者于 2026-08-14 要求把主面板 Footer 同步与设置按钮的内部图形
+放大到中间 ChatGPT Logo 的光学尺寸。`QV-DESIGN-FOOTER-ICONS-008` 已进入
+`Accepted / Verifying`：同步与设置图形分别以 `1.73171×`、`1.42769×`
+等比缩放到约 `14 pt`，概览页和额度重置详情页共用的深浅矢量资源均已更新；
+不改变 `24 pt` 圆形外框、间距、交互、辅助功能或其他按钮。XML、Asset
+Catalog、Impeccable 与 Personal Team Universal 构建通过；完整测试复跑
+停滞在既有 `testDemoResetUsesSimulationBoundary`，最终视觉等待产品所有者验收。
 
 当前开发提交不在本文固化；每次会话使用 `git branch --show-current` 和
 `git rev-parse HEAD` 读取，避免 Handoff 在合并后立即陈旧。
@@ -147,13 +155,13 @@ SDD 唯一规格索引：
 | 项目 | 当前值 |
 |---|---|
 | 公开生产基线 | `0.3.5 (Build 5)`，GitHub Latest，已进入公开 Stable appcast |
-| 当前进行中工作 | `0.3.5 Build 6`：Widget 左上角已改用专用 `12 pt` 潮汐窗矢量；与既有 Build 6 视觉改动共同等待产品验收 |
-| 当前规格 | `QV-ARCH-PERSONAL-SIGNING-006`、`QV-DESIGN-WIDGET-001`、`QV-BRAND-TIDE-WINDOW-005`、`QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
+| 当前进行中工作 | `0.3.5 Build 6`：Footer 同步与设置图形已校准到 ChatGPT Logo 的约 `14 pt` 光学尺寸；Widget 潮汐窗与既有视觉改动共同等待验收 |
+| 当前规格 | `QV-DESIGN-FOOTER-ICONS-008`、`QV-ARCH-PERSONAL-SIGNING-006`、`QV-DESIGN-WIDGET-001`、`QV-BRAND-TIDE-WINDOW-005`、`QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
 | 规格状态 | `Accepted` |
-| 交付状态 | Build 5 为 `Released`；Build 6 Widget Logo、个人签名迁移、Header Logo、色阶、动态图标、中文单位、电脑时区日期与更新规格均为 `Verifying` |
+| 交付状态 | Build 5 为 `Released`；Build 6 Footer 图标、Widget Logo、个人签名迁移、Header Logo、色阶、动态图标、中文单位、电脑时区日期与更新规格均为 `Verifying` |
 | 当前开发源码 | App / Widget 为 `0.3.5 (6)`；正迁移到 `com.stoven.quotaview` / `com.stoven.quotaview.widget` 与 `7KP9UX9AA3.com.stoven.quotaview.shared`；公开 Build 5 身份保持不变 |
-| 发布测试与验收 | Build 6 74 项测试通过；Universal Release 由 Personal Team 签名，App/Widget/Helper Team、版本、双架构、App Group、新容器写入与 Widget Logo 矢量资源通过；既有 Widget 数据/布局已验收，新 Logo 等待视觉确认 |
-| 当前个人签名包 | `dist/QuotaView.app` 与 `dist/QuotaView-v0.3.5-build.6.zip`；`12,781,231 bytes`；SHA-256 `216e66b64bf6e75818ecfc16a92c6261fca8751a0fc76e7ee252becb1e01bfb6`；未公证、未发布 |
+| 发布测试与验收 | Build 6 既有基线 74 项测试通过；本次 Footer SVG 的 XML、Asset Catalog、Impeccable 与 Personal Team Universal 构建通过。当前完整测试复跑停滞于既有 Demo Reset 用例，未标记通过；Footer 与其他新视觉等待产品确认 |
+| 当前个人签名包 | `dist/QuotaView.app` 与 `dist/QuotaView-v0.3.5-build.6.zip`；`12,782,578 bytes`；SHA-256 `a4dcf85ff2ca4320f1a72f2249f318f90e079e7b4dd87ec8dd48b5049655a443`；未公证、未发布 |
 | 正式本地包 | `/private/tmp/quotaview-033-build5-estimated-cost/dist/QuotaView.app` 与 `dist/QuotaView-v0.3.5-build.5.zip` |
 | 自动更新序列准入 | `0.3.5 Build 5` 已完成准入和部署；Build 6 未获准进入 Feed，任何后续 GitHub 推送默认不进入自动更新序列 |
 | 正式资产 | `QuotaView-v0.3.5-build.5.zip`；`12,747,358 bytes`；SHA-256 `d8524ddf5739501bd797cdd082cc8738a7775d8b994fe99033068af8f821b2e1` |

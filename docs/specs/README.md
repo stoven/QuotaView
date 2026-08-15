@@ -10,10 +10,11 @@
 >
 > 当前生产基线：QuotaView `0.3.5 (Build 5)`
 >
-> 当前进行中工作：`0.3.5 Build 6` 已把 Widget 左上角旧单色 Logo 替换为
-> 专用 `12 pt` 潮汐窗矢量，正在等待产品所有者视觉验收
+> 当前进行中工作：`0.3.5 Build 6` 已把 Footer 同步与设置图形校准到
+> ChatGPT Logo 的光学尺寸，正在等待产品验收；Widget 潮汐窗与既有视觉改动
+> 同样等待验收
 >
-> 当前交付阶段：公开版本 `Released`（`v0.3.5-build.5`）；Widget Logo 与
+> 当前交付阶段：公开版本 `Released`（`v0.3.5-build.5`）；Footer 图标、Widget Logo 与
 > Build 6 个人签名迁移、Header Logo、色阶、动态菜单栏图标、
 > 中文单位、电脑时区日期与更新规格均为 `Verifying`
 
@@ -51,12 +52,12 @@
 |---|---|
 | 公开生产版本 | `0.3.5 (Build 5)`；GitHub Latest；已进入公开 Stable appcast |
 | 当前开发代码版本 | `MARKETING_VERSION = 0.3.5`、`CURRENT_PROJECT_VERSION = 6` |
-| 当前迭代 | `0.3.5 Build 6`：Widget 左上角已改用专用 `12 pt` 潮汐窗矢量；与既有 Build 6 视觉改动共同等待产品验收 |
-| 当前规格 | `QV-ARCH-PERSONAL-SIGNING-006`、`QV-DESIGN-WIDGET-001`、`QV-BRAND-TIDE-WINDOW-005`、`QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
+| 当前迭代 | `0.3.5 Build 6`：Footer 同步与设置图形已校准到 ChatGPT Logo 的约 `14 pt` 光学尺寸；Widget 潮汐窗与既有 Build 6 视觉改动共同等待产品验收 |
+| 当前规格 | `QV-DESIGN-FOOTER-ICONS-008`、`QV-ARCH-PERSONAL-SIGNING-006`、`QV-DESIGN-WIDGET-001`、`QV-BRAND-TIDE-WINDOW-005`、`QV-PRODUCT-DYNAMIC-MENU-BAR-004`、`QV-PRODUCT-USAGE-OVERVIEW-002`、`QV-PRODUCT-TOKEN-ACTIVITY-001`、`QV-PRODUCT-APP-UPDATES-003` |
 | 规格状态 | `Accepted` |
-| 交付状态 | `0.3.5 Build 5` 为 `Released`；Build 6 Widget Logo、个人签名迁移、视觉、数据与更新规格均为 `Verifying` |
+| 交付状态 | `0.3.5 Build 5` 为 `Released`；Build 6 Footer 图标、Widget Logo、个人签名迁移、视觉、数据与更新规格均为 `Verifying` |
 | 当前开发源码 | Build 6 正迁移到 App `com.stoven.quotaview`、Widget `com.stoven.quotaview.widget`、App Group `7KP9UX9AA3.com.stoven.quotaview.shared`；公开 Build 5 身份与更新信任链不变 |
-| 生产自动化 | Build 6 `swift test` 74 项通过、0 失败；Universal Release 使用 `Apple Development: Steven He (8U28H2PZU6)` 签名；App、Widget、Hook 均为 Team `7KP9UX9AA3`，App Group、双架构与 Widget Logo 矢量资源编译校验通过 |
+| 生产自动化 | Build 6 既有基线 `swift test` 74 项通过；本次 Footer 资源 XML、Impeccable、Asset Catalog 与 Personal Team Universal Release 构建通过。当前完整测试复跑停滞在既有 `testDemoResetUsesSimulationBoundary`，未记录为本轮测试通过；App、Widget、Hook 均为 Team `7KP9UX9AA3` 与双架构 |
 | 正式 Release | `v0.3.5-build.5` / [QuotaView 0.3.5 Build 5 — Usage Overview and App Updates](https://github.com/Duoasa/QuotaView/releases/tag/v0.3.5-build.5) / 发布提交 `58e676a8317d907107af3d1731ab11a0ded52684` |
 | 正式资产 | `QuotaView-v0.3.5-build.5.zip`；`12,747,358 bytes`；SHA-256 `d8524ddf5739501bd797cdd082cc8738a7775d8b994fe99033068af8f821b2e1`；Apple Submission `88796026-3227-405a-9e1b-900af973c527` |
 | 回下载与 Feed | GitHub 资产与本地公证包逐字节一致；签名、Staple、Gatekeeper、版本、架构和资源复核通过；[公开 appcast](https://duoasa.github.io/QuotaView/appcast.xml) 线上逐字节与 EdDSA 验证通过 |
@@ -87,6 +88,11 @@
   [`QV-BRAND-TIDE-WINDOW-005`](../design/quotaview-tide-window-header-logo-0.3.5-build6.md)
   以 `Accepted / Verifying` 记录；Header 与 Widget 专用 `12 pt` 潮汐窗矢量
   均已完成实现和自动化构建验证，不改变 AppIcon，等待视觉验收；
+- 概览页与额度重置详情页 Footer 图标由
+  [`QV-DESIGN-FOOTER-ICONS-008`](../design/quotaview-footer-icon-optical-sizing-0.3.5-build6.md)
+  以 `Accepted / Verifying` 记录；同步与设置图形已对齐 ChatGPT Logo 的约
+  `14 pt` 光学尺寸，不改变三枚 `24 pt` 按钮外框、布局、交互或辅助功能；
+  资源与 Universal 构建通过，完整测试复跑存在既有用例停滞，等待视觉验收；
 - 更新器真实 N → N+1 继续由
   [`QV-PRODUCT-APP-UPDATES-003`](../design/quotaview-app-updates-0.3.5.md)
   以 `Accepted / Verifying` 记录；
@@ -132,6 +138,7 @@
 |---|---|---|---|---|---|
 | `QV-GOVERNANCE-001` | [AGENTS.md](../../AGENTS.md) | 治理规范 | `Accepted` | — | 长期产品、实现、验证与发布约束 |
 | `QV-PRODUCT-ACTIVITY-ISLAND-001` | [单任务灵动岛产品规格](../design/quotaview-codex-activity-widget-product.md) | 已发布功能规格 | `Accepted` | `Released` | `0.3.1` 单任务生产行为基线 |
+| `QV-DESIGN-FOOTER-ICONS-008` | [Footer 图标光学校准规格](../design/quotaview-footer-icon-optical-sizing-0.3.5-build6.md) | 当前视觉规格 | `Accepted` | `Verifying` | 同步与设置图形已对齐 ChatGPT Logo 的约 14 pt 光学尺寸；资源与构建通过，等待视觉验收 |
 | `QV-BRAND-TIDE-WINDOW-005` | [潮汐窗品牌 Logo 规格](../design/quotaview-tide-window-header-logo-0.3.5-build6.md) | 当前品牌规格 | `Accepted` | `Verifying` | Header 与 Widget 专用 12 pt 潮汐窗矢量已完成实现、测试与构建，等待视觉验收 |
 | `QV-PRODUCT-DYNAMIC-MENU-BAR-004` | [动态菜单栏图标规格](../design/quotaview-dynamic-menu-bar-icon-0.3.5-build6.md) | 当前功能规格 | `Accepted` | `Verifying` | Build 6 按真实剩余额度动态填充潮汐窗图标；自动化通过，等待视觉验收 |
 | `QV-PRODUCT-TOKEN-ACTIVITY-001` | [Token 活动图表规格](../design/quotaview-token-activity.md) | 当前功能规格 | `Accepted` | `Verifying` | `0.3.3` 基线已发布；Build 6 共享蓝灰色阶、中文万/亿单位与电脑时区日期等待视觉验收 |
@@ -231,6 +238,17 @@
 | `BRAND-HEADER-04` | AX、测试、Universal 构建与产品验收 | 74 项测试、Universal 无签名构建 | 自动化通过；等待产品验收 |
 | `BRAND-WIDGET-05` | Widget 专用 `12 × 12 pt` 无红点潮汐窗矢量 | 深浅 SVG + Asset Catalog / `assetutil` 校验 | 已实现；等待视觉验收 |
 | `BRAND-WIDGET-06` | Widget 布局、AX、深浅资源、测试与构建不变量 | 代码审查、74 项测试、Personal Team Universal 构建 | 自动化通过；等待产品验收 |
+
+
+### 5.5 Footer 图标光学校准追踪矩阵
+
+| Requirement ID | 规格范围 | 当前证据 | 当前结论 |
+|---|---|---|---|
+| `FOOTER-ICON-01` | 同步、ChatGPT 与设置图形统一约 `14 pt` 光学尺寸 | 深浅 SVG 等比变换与包围盒审查 | 已实现；等待视觉验收 |
+| `FOOTER-ICON-02` | `24 pt` 外框、`9 pt` 间距和 Footer 布局不变量 | SwiftUI 源码无改动 + SVG 外框审查 | 通过；等待视觉验收 |
+| `FOOTER-ICON-03` | 概览/重置页与深浅资源一致 | `xmllint`、`assetutil`、保留矢量表示 | 通过；等待视觉验收 |
+| `FOOTER-ICON-04` | 交互、状态与辅助功能不变量 | SwiftUI 源码无改动 + Impeccable 无发现 | 通过；等待交互确认 |
+| `FOOTER-ICON-05` | 自动化、Universal 构建与产品验收 | Personal Team Universal 构建通过；完整测试复跑停滞于既有 Demo Reset 用例 | 构建通过；测试复跑阻塞；等待产品验收 |
 
 0.3.2 Preview 的多任务 Requirement 与发布证据继续由其独立规格维护；不得
 用其 `Released` 状态推导多任务实现已进入 0.3.5 稳定版。
